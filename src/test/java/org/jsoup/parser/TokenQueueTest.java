@@ -9,6 +9,14 @@ import static org.junit.Assert.assertEquals;
  * Token queue tests.
  */
 public class TokenQueueTest {
+    // This is a test case that improves coverage.
+    @Test public void chompBalanced_improved() {
+         TokenQueue tq = new TokenQueue(")");
+         String guts = tq.chompBalanced('(', ')');
+         assertEquals("",guts);
+    }
+    
+    
     @Test public void chompBalanced() {
         TokenQueue tq = new TokenQueue(":contains(one (two) three) four");
         String pre = tq.consumeTo("(");
