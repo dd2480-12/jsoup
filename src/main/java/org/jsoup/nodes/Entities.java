@@ -26,6 +26,8 @@ public class Entities {
     private static final HashMap<String, String> multipoints = new HashMap<>(); // name -> multiple character references
     private static final Document.OutputSettings DefaultOutput = new Document.OutputSettings();
 
+    public static boolean[] coverage = new boolean[24];
+
     public enum EscapeMode {
         /**
          * Restricted entities suitable for XHTML output: lt, gt, amp, and quot only.
@@ -158,6 +160,10 @@ public class Entities {
         return escape(string, DefaultOutput);
     }
 
+    private static void covered(int i) {
+        coverage[i] = true;
+    }
+
     // this method is ugly, and does a lot. but other breakups cause rescanning and stringbuilder generations
     static void escape(Appendable accum, String string, Document.OutputSettings out,
                        boolean inAttribute, boolean normaliseWhite, boolean stripLeadingWhite) throws IOException {
@@ -173,63 +179,112 @@ public class Entities {
         for (int offset = 0; offset < length; offset += Character.charCount(codePoint)) {
             codePoint = string.codePointAt(offset);
 
-            if (normaliseWhite) {
-                if (StringUtil.isWhitespace(codePoint)) {
-                    if ((stripLeadingWhite && !reachedNonWhite) || lastWasWhite)
+            if (normaliseWhite) { // 0
+                covered(0);
+                if (StringUtil.isWhitespace(codePoint)) { // 1
+                    covered(1);
+                    if ((stripLeadingWhite && !reachedNonWhite) || lastWasWhite) { // 2
+                        covered(2);
                         continue;
+                    }
                     accum.append(' ');
                     lastWasWhite = true;
                     continue;
-                } else {
+                } else { // 3
+                    covered(3);
                     lastWasWhite = false;
                     reachedNonWhite = true;
                 }
             }
             // surrogate pairs, split implementation for efficiency on single char common case (saves creating strings, char[]):
-            if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) {
+            if (codePoint < Character.MIN_SUPPLEMENTARY_CODE_POINT) { // 4
+                covered(4);
                 final char c = (char) codePoint;
                 // html specific and required escapes:
                 switch (c) {
-                    case '&':
+                    case '&': // 5
+                        covered(5);
                         accum.append("&amp;");
                         break;
-                    case 0xA0:
-                        if (escapeMode != EscapeMode.xhtml)
+                    case 0xA0: // 6
+                        covered(6);
+                        if (escapeMode != EscapeMode.xhtml) // 7
+                        {
+                            covered(7);
                             accum.append("&nbsp;");
-                        else
+                        }
+                        else  // 8
+                        {
+                            covered(8);
                             accum.append("&#xa0;");
+                        }
                         break;
-                    case '<':
+                    case '<': // 9
+                        covered(9);
                         // escape when in character data or when in a xml attribue val; not needed in html attr val
-                        if (!inAttribute || escapeMode == EscapeMode.xhtml)
+                        if (!inAttribute || escapeMode == EscapeMode.xhtml) // 10
+                        {
+                            covered(10);
                             accum.append("&lt;");
-                        else
+                        }
+                        else // 11
+                        {
+                            covered(11);
                             accum.append(c);
+                        }
                         break;
-                    case '>':
-                        if (!inAttribute)
+                    case '>': // 12
+                        covered(12);
+                        if (!inAttribute) // 13
+                        {
+                            covered(13);
                             accum.append("&gt;");
-                        else
+                        }
+                        else // 14
+                        {
+                            covered(14);
                             accum.append(c);
+                        }
                         break;
-                    case '"':
-                        if (inAttribute)
+                    case '"': // 15
+                        covered(15);
+                        if (inAttribute) // 16
+                        {
+                            covered(16);
                             accum.append("&quot;");
-                        else
+                        }
+                        else // 17
+                        {
+                            covered(17);
                             accum.append(c);
+                        }
                         break;
-                    default:
-                        if (canEncode(coreCharset, c, encoder))
+                    default: // 18
+                        covered(18);
+                        if (canEncode(coreCharset, c, encoder)) // 19
+                        {
+                            covered(19);
                             accum.append(c);
-                        else
+                        }
+                        else // 20
+                        {
+                            covered(20);
                             appendEncoded(accum, escapeMode, codePoint);
+                        }
                 }
-            } else {
+            } else { // 21
+                covered(21);
                 final String c = new String(Character.toChars(codePoint));
-                if (encoder.canEncode(c)) // uses fallback encoder for simplicity
+                if (encoder.canEncode(c)) // 22 uses fallback encoder for simplicity
+                {
+                    covered(22);
                     accum.append(c);
-                else
+                }
+                else // 23
+                {
+                    covered(23);
                     appendEncoded(accum, escapeMode, codePoint);
+                }
             }
         }
     }

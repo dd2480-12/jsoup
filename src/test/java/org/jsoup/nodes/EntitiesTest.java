@@ -1,13 +1,52 @@
 package org.jsoup.nodes;
 
 import org.jsoup.Jsoup;
+import org.jsoup.select.QueryParser;
+import org.junit.AfterClass;
 import org.junit.Test;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import static org.jsoup.nodes.Document.OutputSettings;
 import static org.jsoup.nodes.Entities.EscapeMode.*;
 import static org.junit.Assert.*;
 
 public class EntitiesTest {
+
+    @AfterClass
+    public static void report() {
+        String lb = System.lineSeparator();
+        StringBuilder cvrd = new StringBuilder("Branches covered:" + lb);
+        StringBuilder notcvrd = new StringBuilder("Branches NOT covered:" + lb);
+        boolean[] coverage = Entities.coverage;
+        int covered = 0;
+        for(int i = 0; i < coverage.length; i++) {
+            if(coverage[i]) {
+                cvrd.append(i);
+                cvrd.append(lb);
+                covered++;
+            }
+            else {
+                notcvrd.append(i);
+                notcvrd.append(lb);
+            }
+        }
+        File f = new File("EntitiesTest.out");
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+            String s = "Coverage: " + (((double) covered)/((double) coverage.length)) + lb + cvrd.toString() + notcvrd.toString();
+            bw.write(s);
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+        }
+    }
+
+
     @Test public void escape() {
         String text = "Hello &<> Å å π 新 there ¾ © »";
         String escapedAscii = Entities.escape(text, new OutputSettings().charset("ascii").escapeMode(base));

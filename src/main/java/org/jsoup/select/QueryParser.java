@@ -22,6 +22,7 @@ public class QueryParser {
     private String query;
     private List<Evaluator> evals = new ArrayList<>();
 
+    public static boolean[] coverage = new boolean[30];
     /**
      * Create a new QueryParser.
      * @param query CSS query
@@ -147,65 +148,128 @@ public class QueryParser {
         return StringUtil.releaseBuilder(sq);
     }
 
+    private void covered(int i) {
+        coverage[i] = true;
+    }
+
     private void findElements() {
-        if (tq.matchChomp("#"))
+        if (tq.matchChomp("#")) {
+            covered(0);
             byId();
-        else if (tq.matchChomp("."))
+        }
+        else if (tq.matchChomp(".")){
+            covered(1);
             byClass();
-        else if (tq.matchesWord() || tq.matches("*|"))
+        }
+        else if (tq.matchesWord() || tq.matches("*|")){
+            covered(2);
             byTag();
-        else if (tq.matches("["))
+        }
+        else if (tq.matches("[")){
+            covered(3);
             byAttribute();
-        else if (tq.matchChomp("*"))
+        }
+        else if (tq.matchChomp("*")){
+            covered(4);
             allElements();
-        else if (tq.matchChomp(":lt("))
+        }
+        else if (tq.matchChomp(":lt(")){
+            covered(5);
             indexLessThan();
-        else if (tq.matchChomp(":gt("))
+        }
+        else if (tq.matchChomp(":gt(")){
+            covered(6);
             indexGreaterThan();
-        else if (tq.matchChomp(":eq("))
+        }
+        else if (tq.matchChomp(":eq(")){
+            covered(7);
             indexEquals();
-        else if (tq.matches(":has("))
+        }
+        else if (tq.matches(":has(")){
+            covered(8);
             has();
-        else if (tq.matches(":contains("))
+        }
+        else if (tq.matches(":contains(")){
+            covered(9);
             contains(false);
-        else if (tq.matches(":containsOwn("))
+        }
+        else if (tq.matches(":containsOwn(")){
+            covered(10);
             contains(true);
-        else if (tq.matches(":containsData("))
+        }
+        else if (tq.matches(":containsData(")){
+            covered(11);
             containsData();
-        else if (tq.matches(":matches("))
+        }
+        else if (tq.matches(":matches(")){
+            covered(12);
             matches(false);
-        else if (tq.matches(":matchesOwn("))
+        }
+        else if (tq.matches(":matchesOwn(")){
+            covered(13);
             matches(true);
-        else if (tq.matches(":not("))
+        }
+        else if (tq.matches(":not(")){
+            covered(14);
             not();
-		else if (tq.matchChomp(":nth-child("))
+        }
+		else if (tq.matchChomp(":nth-child(")){
+		    covered(15);
         	cssNthChild(false, false);
-        else if (tq.matchChomp(":nth-last-child("))
+		}
+        else if (tq.matchChomp(":nth-last-child(")){
+            covered(16);
         	cssNthChild(true, false);
-        else if (tq.matchChomp(":nth-of-type("))
+        }
+        else if (tq.matchChomp(":nth-of-type(")){
+            covered(17);
         	cssNthChild(false, true);
-        else if (tq.matchChomp(":nth-last-of-type("))
-        	cssNthChild(true, true);
-        else if (tq.matchChomp(":first-child"))
+        }
+        else if (tq.matchChomp(":nth-last-of-type(")) {
+            covered(18);
+            cssNthChild(true, true);
+        }
+        else if (tq.matchChomp(":first-child")){
+            covered(19);
         	evals.add(new Evaluator.IsFirstChild());
-        else if (tq.matchChomp(":last-child"))
-        	evals.add(new Evaluator.IsLastChild());
-        else if (tq.matchChomp(":first-of-type"))
+        }
+        else if (tq.matchChomp(":last-child")) {
+            covered(20);
+            evals.add(new Evaluator.IsLastChild());
+        }
+        else if (tq.matchChomp(":first-of-type")){
+            covered(21);
         	evals.add(new Evaluator.IsFirstOfType());
-        else if (tq.matchChomp(":last-of-type"))
+        }
+        else if (tq.matchChomp(":last-of-type")){
+            covered(22);
         	evals.add(new Evaluator.IsLastOfType());
-        else if (tq.matchChomp(":only-child"))
+        }
+        else if (tq.matchChomp(":only-child")){
+            covered(23);
         	evals.add(new Evaluator.IsOnlyChild());
-        else if (tq.matchChomp(":only-of-type"))
+        }
+        else if (tq.matchChomp(":only-of-type")){
+            covered(24);
         	evals.add(new Evaluator.IsOnlyOfType());
-        else if (tq.matchChomp(":empty"))
+        }
+        else if (tq.matchChomp(":empty")){
+            covered(25);
         	evals.add(new Evaluator.IsEmpty());
-        else if (tq.matchChomp(":root"))
-        	evals.add(new Evaluator.IsRoot());
-        else if (tq.matchChomp(":matchText"))
+        }
+        else if (tq.matchChomp(":root")) {
+            covered(26);
+            evals.add(new Evaluator.IsRoot());
+        }
+        else if (tq.matchChomp(":matchText")){
+            covered(27);
             evals.add(new Evaluator.MatchText());
+        }
 		else // unhandled
+        {
+            covered(28);
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
+        }
 
     }
 
