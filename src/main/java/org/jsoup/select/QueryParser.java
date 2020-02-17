@@ -4,6 +4,10 @@ import org.jsoup.internal.StringUtil;
 import org.jsoup.helper.Validate;
 import org.jsoup.parser.TokenQueue;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -22,7 +26,7 @@ public class QueryParser {
     private String query;
     private List<Evaluator> evals = new ArrayList<>();
 
-    public static boolean[] coverage = new boolean[30];
+    public static boolean[] coverage = new boolean[29];
     /**
      * Create a new QueryParser.
      * @param query CSS query
@@ -268,9 +272,39 @@ public class QueryParser {
 		else // unhandled
         {
             covered(28);
+            report();
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
         }
+        report();
+    }
 
+    public static void report() {
+        String lb = System.lineSeparator();
+        StringBuilder cvrd = new StringBuilder("Branches covered:" + lb);
+        StringBuilder notcvrd = new StringBuilder("Branches NOT covered:" + lb);
+        boolean[] coverage = QueryParser.coverage;
+        int covered = 0;
+        for(int i = 0; i < coverage.length; i++) {
+            if(coverage[i]) {
+                cvrd.append(i);
+                cvrd.append(lb);
+                covered++;
+            }
+            else {
+                notcvrd.append(i);
+                notcvrd.append(lb);
+            }
+        }
+        File f = new File("QueryParserTest.out");
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(f));
+            String s = "Coverage: " + (((double) covered)/((double) coverage.length)) + lb + cvrd.toString() + notcvrd.toString();
+            bw.write(s);
+            bw.flush();
+            bw.close();
+        } catch (IOException e) {
+            System.out.println("Error writing to file");
+        }
     }
 
     private void byId() {

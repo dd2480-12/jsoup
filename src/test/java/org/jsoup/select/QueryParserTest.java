@@ -18,36 +18,6 @@ import static org.junit.Assert.*;
  */
 public class QueryParserTest {
 
-    @AfterClass
-    public static void report() {
-        String lb = System.lineSeparator();
-        StringBuilder cvrd = new StringBuilder("Branches covered:" + lb);
-        StringBuilder notcvrd = new StringBuilder("Branches NOT covered:" + lb);
-        boolean[] coverage = QueryParser.coverage;
-        int covered = 0;
-        for(int i = 0; i < coverage.length; i++) {
-            if(coverage[i]) {
-                cvrd.append(i);
-                cvrd.append(lb);
-                covered++;
-            }
-            else {
-                notcvrd.append(i);
-                notcvrd.append(lb);
-            }
-        }
-        File f = new File("QueryParserTest.out");
-        try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f));
-            String s = "Coverage: " + (((double) covered)/((double) coverage.length)) + lb + cvrd.toString() + notcvrd.toString();
-            bw.write(s);
-            bw.flush();
-            bw.close();
-        } catch (IOException e) {
-            System.out.println("Error writing to file");
-        }
-    }
-
     @Test public void testOrGetsCorrectPrecedence() {
         // tests that a selector "a b, c d, e f" evals to (a AND b) OR (c AND d) OR (e AND f)"
         // top level or, three child ands
