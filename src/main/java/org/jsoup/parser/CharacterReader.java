@@ -4,6 +4,7 @@ import org.jsoup.UncheckedIOException;
 import org.jsoup.helper.Validate;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.Arrays;
@@ -28,6 +29,48 @@ public final class CharacterReader {
     private int bufMark = -1;
     private final String[] stringCache = new String[512]; // holds reused strings in this doc, to lessen garbage
 
+    
+    public static class NextIndexOf_test {
+    	static boolean entered_branch[] = new boolean[7];
+    	
+    	public static void print_to_file() {
+    		String s = print();
+    		double d = coverage();
+    		try {
+    			PrintWriter out = new PrintWriter("NextIndexOfTest.txt");
+    			out.println(s + "\n" + "Coverage\n" + d);
+    			out.flush();
+    			out.close();
+    		}
+    		catch(Exception e) {
+    			
+    		}
+    	}
+    	
+    	public static double coverage() {
+    		double cover = 0;
+    		for(int i = 0; i < entered_branch.length; i++) {
+    			if(entered_branch[i]) {
+    				cover++;
+    			}
+    		}
+    		return cover / entered_branch.length;
+    	}
+    	public static String print() {
+    		StringBuilder s = new StringBuilder();
+    		s.append("Entered Branches\n");
+    		for(int i = 0; i < entered_branch.length; i++) {
+    			if(entered_branch[i]) {
+    				s.append((i + 1) + " ");
+    			}
+    		}
+    		s.append("\n");
+    		return s.toString();
+    	}
+    }
+
+    
+    
     public CharacterReader(Reader input, int sz) {
         Validate.notNull(input);
         Validate.isTrue(input.markSupported());
@@ -176,20 +219,30 @@ public final class CharacterReader {
         bufferUp();
         // doesn't handle scanning for surrogates
         char startChar = seq.charAt(0);
-        for (int offset = bufPos; offset < bufLength; offset++) {
+        for (int offset = bufPos; offset < bufLength; offset++) { // #1
+        	NextIndexOf_test.entered_branch[0] = true;
             // scan to first instance of startchar:
-            if (startChar != charBuf[offset])
-                while(++offset < bufLength && startChar != charBuf[offset]) { /* empty */ }
+            if (startChar != charBuf[offset]) { // #2
+            	NextIndexOf_test.entered_branch[1] = true;
+                while(++offset < bufLength && startChar != charBuf[offset]) { NextIndexOf_test.entered_branch[2] = true; /* empty */ } // #3
+            }
             int i = offset + 1;
             int last = i + seq.length()-1;
-            if (offset < bufLength && last <= bufLength) {
-                for (int j = 1; i < last && seq.charAt(j) == charBuf[i]; i++, j++) { /* empty */ }
-                if (i == last) // found full sequence
+            if (offset < bufLength && last <= bufLength) { // #4
+            	NextIndexOf_test.entered_branch[3] = true;
+                for (int j = 1; i < last && seq.charAt(j) == charBuf[i]; i++, j++) {NextIndexOf_test.entered_branch[4] = true; /* empty */ } // # 5
+                if (i == last) { // found full sequence // #6
+                	NextIndexOf_test.entered_branch[5] = true;
+            		NextIndexOf_test.print_to_file();
                     return offset - bufPos;
+                }
             }
-        }
+        } // #7
+        NextIndexOf_test.entered_branch[6] = true;
+        NextIndexOf_test.print_to_file();
         return -1;
     }
+
 
     /**
      * Reads characters up to the specific char.
