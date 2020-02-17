@@ -442,6 +442,10 @@ public class HtmlTreeBuilder extends TreeBuilder {
         }
     }
 
+    void setContextElement(Element el) {
+        contextElement = el;
+    }
+
     void resetInsertionMode() {
         boolean last = false;
         for (int pos = stack.size() -1; pos >= 0; pos--) {
