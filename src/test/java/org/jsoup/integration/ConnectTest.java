@@ -3,11 +3,13 @@ package org.jsoup.integration;
 import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
+import org.jsoup.integration.servlets.BuggyProtocolServlet;
 import org.jsoup.integration.servlets.Deflateservlet;
 import org.jsoup.integration.servlets.EchoServlet;
 import org.jsoup.integration.servlets.FileServlet;
 import org.jsoup.integration.servlets.HelloServlet;
 import org.jsoup.integration.servlets.InterruptedServlet;
+import org.jsoup.integration.servlets.LocationServlet;
 import org.jsoup.integration.servlets.RedirectServlet;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -383,6 +385,19 @@ public class ConnectTest {
             threw = true;
         }
         assertTrue(threw);
+    }
+    
+
+    @Test public void handlesLocationBug() throws IOException {
+        final Document doc = Jsoup.connect(RedirectServlet.Url)
+                .data("Hello", "there")
+                .data(RedirectServlet.LocationParam, BuggyProtocolServlet.Url)
+                .data(RedirectServlet.CodeParam, "307")
+                .post();
+
+            assertEquals(BuggyProtocolServlet.Url.substring(6), doc.location());
+            assertEquals("POST", ihVal("Method", doc));
+            assertEquals("there", ihVal("Hello", doc));
     }
 
     @Test public void doesNotPostFor302() throws IOException {
