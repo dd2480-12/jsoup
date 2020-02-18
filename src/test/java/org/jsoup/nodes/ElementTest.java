@@ -578,7 +578,7 @@ public class ElementTest {
         script.append("This is a script");
 
         assertEquals("var a = 0;", script.data());
-
+        assertEquals("This is a script", script.text());
     }
 
     /*
