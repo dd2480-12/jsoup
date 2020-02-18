@@ -118,7 +118,7 @@ Report of old coverage:
 
 The methods we selected are the following:
 | # | Package.Class::Method | Init Coverage (%) | Added tests | Impr Coverage 
-| --- | --- | --- | --- | --- | --- | 
+| --- | --- | --- | --- | --- | 
 1 | Parser.CharactherReader::nextIndexOf | 100 | 0 | 100
 2 | Helper.HttpConnection::Response::Execute | 92.7 | 1 | 94.8 
 3 | Helper.DataUtil::parseInputStream | 92.2 | 1 | 95.9 
