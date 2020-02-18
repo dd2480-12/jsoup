@@ -435,6 +435,9 @@ public class HtmlTreeBuilder extends TreeBuilder {
         public static void write() {
             try (PrintWriter pw = new PrintWriter(new File("resetInsertionMode.txt"))) {
                 pw.write("Branch coverage of resetInsertionMode: " + coverage() + '\n');
+                for (int i = 0; i < branches.length; i++) {
+                    pw.write("branch " + i + " accessed: " + branches[i] + '\n');
+                }
                 pw.flush();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
