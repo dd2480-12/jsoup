@@ -12,14 +12,7 @@ import org.jsoup.parser.TokenQueue;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSocketFactory;
-import java.io.BufferedInputStream;
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
@@ -48,6 +41,7 @@ import static org.jsoup.internal.Normalizer.lowerCase;
 
 /**
  * Implementation of {@link Connection}.
+ *
  * @see org.jsoup.Jsoup#connect(String)
  */
 public class HttpConnection implements Connection {
@@ -57,7 +51,7 @@ public class HttpConnection implements Connection {
      * vs in jsoup, which would otherwise default to {@code Java}. So by default, use a desktop UA.
      */
     public static final String DEFAULT_UA =
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36";
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36";
     private static final String USER_AGENT = "User-Agent";
     public static final String CONTENT_TYPE = "Content-Type";
     public static final String MULTIPART_FORM_DATA = "multipart/form-data";
@@ -84,17 +78,18 @@ public class HttpConnection implements Connection {
 
     /**
      * Encodes the input URL into a safe ASCII URL string
+     *
      * @param url unescaped URL
      * @return escaped URL
      */
-	private static String encodeUrl(String url) {
+    private static String encodeUrl(String url) {
         try {
             URL u = new URL(url);
             return encodeUrl(u).toExternalForm();
         } catch (Exception e) {
             return url;
         }
-	}
+    }
 
     static URL encodeUrl(URL u) {
         try {
@@ -176,9 +171,9 @@ public class HttpConnection implements Connection {
     }
 
     public Connection ignoreHttpErrors(boolean ignoreHttpErrors) {
-		req.ignoreHttpErrors(ignoreHttpErrors);
-		return this;
-	}
+        req.ignoreHttpErrors(ignoreHttpErrors);
+        return this;
+    }
 
     public Connection ignoreContentType(boolean ignoreContentType) {
         req.ignoreContentType(ignoreContentType);
@@ -192,8 +187,8 @@ public class HttpConnection implements Connection {
     }
 
     public Connection sslSocketFactory(SSLSocketFactory sslSocketFactory) {
-	    req.sslSocketFactory(sslSocketFactory);
-	    return this;
+        req.sslSocketFactory(sslSocketFactory);
+        return this;
     }
 
     public Connection data(String key, String filename, InputStream inputStream) {
@@ -217,10 +212,10 @@ public class HttpConnection implements Connection {
 
     public Connection data(String... keyvals) {
         Validate.notNull(keyvals, "Data key value pairs must not be null");
-        Validate.isTrue(keyvals.length %2 == 0, "Must supply an even number of key value pairs");
+        Validate.isTrue(keyvals.length % 2 == 0, "Must supply an even number of key value pairs");
         for (int i = 0; i < keyvals.length; i += 2) {
             String key = keyvals[i];
-            String value = keyvals[i+1];
+            String value = keyvals[i + 1];
             Validate.notEmpty(key, "Data key must not be empty");
             Validate.notNull(value, "Data value must not be null");
             req.data(KeyVal.create(key, value));
@@ -230,7 +225,7 @@ public class HttpConnection implements Connection {
 
     public Connection data(Collection<Connection.KeyVal> data) {
         Validate.notNull(data, "Data collection must not be null");
-        for (Connection.KeyVal entry: data) {
+        for (Connection.KeyVal entry : data) {
             req.data(entry);
         }
         return this;
@@ -255,10 +250,10 @@ public class HttpConnection implements Connection {
         return this;
     }
 
-    public Connection headers(Map<String,String> headers) {
+    public Connection headers(Map<String, String> headers) {
         Validate.notNull(headers, "Header map must not be null");
-        for (Map.Entry<String,String> entry : headers.entrySet()) {
-            req.header(entry.getKey(),entry.getValue());
+        for (Map.Entry<String, String> entry : headers.entrySet()) {
+            req.header(entry.getKey(), entry.getValue());
         }
         return this;
     }
@@ -401,7 +396,7 @@ public class HttpConnection implements Connection {
             int i = 0;
             // BOM:
             if (input.length >= 3 && (input[0] & 0xFF) == 0xEF
-                && (input[1] & 0xFF) == 0xBB & (input[2] & 0xFF) == 0xBF) {
+                    && (input[1] & 0xFF) == 0xBB & (input[2] & 0xFF) == 0xBF) {
                 i = 3;
             }
 
@@ -707,31 +702,75 @@ public class HttpConnection implements Connection {
             return execute(req, null);
         }
 
+        static class ExecuteCoverage {
+            private final static int COUNT = 31;
+            private static boolean[] branches = new boolean[COUNT];
+
+            public static void add(int idx) {
+                branches[idx] = true;
+            }
+
+            public static double coverage() {
+                int accesses = 0;
+                for (boolean accessed : branches) {
+                    accesses += accessed ? 1 : 0;
+                }
+                return (double) accesses / COUNT;
+            }
+
+            public static void write() {
+                try (PrintWriter pw = new PrintWriter(new File("execute.txt"))) {
+                    pw.write("Branch coverage of execute: " + coverage() + '\n');
+                    pw.flush();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         static Response execute(Connection.Request req, Response previousResponse) throws IOException {
             Validate.notNull(req, "Request must not be null");
             Validate.notNull(req.url(), "URL must be specified to connect");
             String protocol = req.url().getProtocol();
-            if (!protocol.equals("http") && !protocol.equals("https"))
+            if (!protocol.equals("http") && !protocol.equals("https")) {
+                ExecuteCoverage.add(0);
+                ExecuteCoverage.write();
                 throw new MalformedURLException("Only http & https protocols supported");
+            } else {
+                ExecuteCoverage.add(1);
+            }
             final boolean methodHasBody = req.method().hasBody();
             final boolean hasRequestBody = req.requestBody() != null;
-            if (!methodHasBody)
+            if (!methodHasBody) {
+                ExecuteCoverage.add(2);
                 Validate.isFalse(hasRequestBody, "Cannot set a request body for HTTP method " + req.method());
-
+            } else {
+                ExecuteCoverage.add(3);
+            }
             // set up the request for execution
             String mimeBoundary = null;
-            if (req.data().size() > 0 && (!methodHasBody || hasRequestBody))
+            if (req.data().size() > 0 && (!methodHasBody || hasRequestBody)) {
+                ExecuteCoverage.add(4);
                 serialiseRequestUrl(req);
-            else if (methodHasBody)
+            } else if (methodHasBody) {
+                ExecuteCoverage.add(4);
                 mimeBoundary = setOutputContentType(req);
+            } else {
+                ExecuteCoverage.add(5);
+            }
 
             long startTime = System.nanoTime();
             HttpURLConnection conn = createConnection(req);
             Response res = null;
             try {
+                ExecuteCoverage.add(6);
                 conn.connect();
-                if (conn.getDoOutput())
+                if (conn.getDoOutput()) {
+                    ExecuteCoverage.add(7);
                     writePost(req, conn.getOutputStream(), mimeBoundary);
+                } else {
+                    ExecuteCoverage.add(8);
+                }
 
                 int status = conn.getResponseCode();
                 res = new Response(previousResponse);
@@ -740,26 +779,44 @@ public class HttpConnection implements Connection {
 
                 // redirect if there's a location header (from 3xx, or 201 etc)
                 if (res.hasHeader(LOCATION) && req.followRedirects()) {
+                    ExecuteCoverage.add(9);
                     if (status != HTTP_TEMP_REDIR) {
+                        ExecuteCoverage.add(10);
                         req.method(Method.GET); // always redirect with a get. any data param from original req are dropped.
                         req.data().clear();
                         req.requestBody(null);
                         req.removeHeader(CONTENT_TYPE);
+                    } else {
+                        ExecuteCoverage.add(11);
                     }
 
                     String location = res.header(LOCATION);
-                    if (location.startsWith("http:/") && location.charAt(6) != '/') // fix broken Location: http:/temp/AAG_New/en/index.php
+                    if (location.startsWith("http:/") && location.charAt(6) != '/') {// fix broken Location: http:/temp/AAG_New/en/index.php
+                        ExecuteCoverage.add(12);
                         location = location.substring(6);
+                    } else {
+                        ExecuteCoverage.add(13);
+                    }
                     URL redir = StringUtil.resolve(req.url(), location);
                     req.url(encodeUrl(redir));
 
                     for (Map.Entry<String, String> cookie : res.cookies.entrySet()) { // add response cookies to request (for e.g. login posts)
+                        ExecuteCoverage.add(14);
                         req.cookie(cookie.getKey(), cookie.getValue());
                     }
+                    ExecuteCoverage.add(15);
+                    ExecuteCoverage.write();
                     return execute(req, res);
+                } else {
+                    ExecuteCoverage.add(16);
                 }
-                if ((status < 200 || status >= 400) && !req.ignoreHttpErrors())
-                        throw new HttpStatusException("HTTP error fetching URL", status, req.url().toString());
+                if ((status < 200 || status >= 400) && !req.ignoreHttpErrors()) {
+                    ExecuteCoverage.add(17);
+                    ExecuteCoverage.write();
+                    throw new HttpStatusException("HTTP error fetching URL", status, req.url().toString());
+                } else {
+                    ExecuteCoverage.add(18);
+                }
 
                 // check that we can handle the returned content type; if not, abort before fetching it
                 String contentType = res.contentType();
@@ -767,40 +824,61 @@ public class HttpConnection implements Connection {
                         && !req.ignoreContentType()
                         && !contentType.startsWith("text/")
                         && !xmlContentTypeRxp.matcher(contentType).matches()
-                        )
+                ) {
+                    ExecuteCoverage.add(19);
+                    ExecuteCoverage.write();
                     throw new UnsupportedMimeTypeException("Unhandled content type. Must be text/*, application/xml, or application/*+xml",
                             contentType, req.url().toString());
+                } else {
+                    ExecuteCoverage.add(20);
+                }
 
                 // switch to the XML parser if content type is xml and not parser not explicitly set
                 if (contentType != null && xmlContentTypeRxp.matcher(contentType).matches()) {
+                    ExecuteCoverage.add(21);
                     // only flip it if a HttpConnection.Request (i.e. don't presume other impls want it):
                     if (req instanceof HttpConnection.Request && !((Request) req).parserDefined) {
+                        ExecuteCoverage.add(22);
                         req.parser(Parser.xmlParser());
                     }
                 }
 
                 res.charset = DataUtil.getCharsetFromContentType(res.contentType); // may be null, readInputStream deals with it
                 if (conn.getContentLength() != 0 && req.method() != HEAD) { // -1 means unknown, chunked. sun throws an IO exception on 500 response with no content when trying to read body
+                    ExecuteCoverage.add(23);
                     res.bodyStream = null;
                     res.bodyStream = conn.getErrorStream() != null ? conn.getErrorStream() : conn.getInputStream();
                     if (res.hasHeaderWithValue(CONTENT_ENCODING, "gzip")) {
+                        ExecuteCoverage.add(24);
                         res.bodyStream = new GZIPInputStream(res.bodyStream);
                     } else if (res.hasHeaderWithValue(CONTENT_ENCODING, "deflate")) {
+                        ExecuteCoverage.add(25);
                         res.bodyStream = new InflaterInputStream(res.bodyStream, new Inflater(true));
+                    } else {
+                        ExecuteCoverage.add(26);
                     }
                     res.bodyStream = ConstrainableInputStream
-                        .wrap(res.bodyStream, DataUtil.bufferSize, req.maxBodySize())
-                        .timeout(startTime, req.timeout())
+                            .wrap(res.bodyStream, DataUtil.bufferSize, req.maxBodySize())
+                            .timeout(startTime, req.timeout())
                     ;
                 } else {
+                    ExecuteCoverage.add(27);
                     res.byteData = DataUtil.emptyByteBuffer();
                 }
             } catch (IOException e) {
-                if (res != null) res.safeClose(); // will be non-null if got to conn
+                ExecuteCoverage.add(28);
+                if (res != null) {
+                    ExecuteCoverage.add(29);
+                    res.safeClose(); // will be non-null if got to conn
+                } else {
+                    ExecuteCoverage.add(30);
+                }
+                ExecuteCoverage.write();
                 throw e;
             }
 
             res.executed = true;
+            ExecuteCoverage.write();
             return res;
         }
 
@@ -862,7 +940,7 @@ public class HttpConnection implements Connection {
                 body = Charset.forName(DataUtil.defaultCharset).decode(byteData).toString();
             else
                 body = Charset.forName(charset).decode(byteData).toString();
-            ((Buffer)byteData).rewind(); // cast to avoid covariant return type change in jdk9
+            ((Buffer) byteData).rewind(); // cast to avoid covariant return type change in jdk9
             return body;
         }
 
@@ -888,9 +966,9 @@ public class HttpConnection implements Connection {
         // set up connection defaults, and details from request
         private static HttpURLConnection createConnection(Connection.Request req) throws IOException {
             final HttpURLConnection conn = (HttpURLConnection) (
-                req.proxy() == null ?
-                req.url().openConnection() :
-                req.url().openConnection(req.proxy())
+                    req.proxy() == null ?
+                            req.url().openConnection() :
+                            req.url().openConnection(req.proxy())
             );
 
             conn.setRequestMethod(req.method().name());
@@ -1011,14 +1089,13 @@ public class HttpConnection implements Connection {
                 // todo - if content type already set, we could add charset
 
                 // if user has set content type to multipart/form-data, auto add boundary.
-                if(req.header(CONTENT_TYPE).contains(MULTIPART_FORM_DATA) &&
+                if (req.header(CONTENT_TYPE).contains(MULTIPART_FORM_DATA) &&
                         !req.header(CONTENT_TYPE).contains("boundary")) {
                     bound = DataUtil.mimeBoundary();
                     req.header(CONTENT_TYPE, MULTIPART_FORM_DATA + "; boundary=" + bound);
                 }
 
-            }
-            else if (needsMultipart(req)) {
+            } else if (needsMultipart(req)) {
                 bound = DataUtil.mimeBoundary();
                 req.header(CONTENT_TYPE, MULTIPART_FORM_DATA + "; boundary=" + bound);
             } else {
@@ -1061,8 +1138,7 @@ public class HttpConnection implements Connection {
             } else if (req.requestBody() != null) {
                 // data will be in query string, we're sending a plaintext body
                 w.write(req.requestBody());
-            }
-            else {
+            } else {
                 // regular form data (application/x-www-form-urlencoded)
                 boolean first = true;
                 for (Connection.KeyVal keyVal : data) {
@@ -1100,11 +1176,11 @@ public class HttpConnection implements Connection {
             boolean first = true;
             // reconstitute the query, ready for appends
             url
-                .append(in.getProtocol())
-                .append("://")
-                .append(in.getAuthority()) // includes host, port
-                .append(in.getPath())
-                .append("?");
+                    .append(in.getProtocol())
+                    .append("://")
+                    .append(in.getAuthority()) // includes host, port
+                    .append(in.getPath())
+                    .append("?");
             if (in.getQuery() != null) {
                 url.append(in.getQuery());
                 first = false;
@@ -1116,9 +1192,9 @@ public class HttpConnection implements Connection {
                 else
                     first = false;
                 url
-                    .append(URLEncoder.encode(keyVal.key(), DataUtil.defaultCharset))
-                    .append('=')
-                    .append(URLEncoder.encode(keyVal.value(), DataUtil.defaultCharset));
+                        .append(URLEncoder.encode(keyVal.key(), DataUtil.defaultCharset))
+                        .append('=')
+                        .append(URLEncoder.encode(keyVal.value(), DataUtil.defaultCharset));
             }
             req.url(new URL(StringUtil.releaseBuilder(url)));
             req.data().clear(); // moved into url as get params
@@ -1148,7 +1224,8 @@ public class HttpConnection implements Connection {
             return new KeyVal().key(key).value(filename).inputStream(stream);
         }
 
-        private KeyVal() {}
+        private KeyVal() {
+        }
 
         public KeyVal key(String key) {
             Validate.notEmpty(key, "Data key must not be empty");
