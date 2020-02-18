@@ -9,7 +9,7 @@ import org.jsoup.integration.servlets.EchoServlet;
 import org.jsoup.integration.servlets.FileServlet;
 import org.jsoup.integration.servlets.HelloServlet;
 import org.jsoup.integration.servlets.InterruptedServlet;
-import org.jsoup.integration.servlets.LocationServlet;
+
 import org.jsoup.integration.servlets.RedirectServlet;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
