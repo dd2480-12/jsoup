@@ -2,6 +2,7 @@ package org.jsoup.helper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.parser.HtmlTreeBuilder;
 import org.jsoup.parser.Parser;
 import org.junit.Test;
 
@@ -10,13 +11,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 import static org.jsoup.integration.ParseTest.getFile;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+
+import static org.junit.Assert.*;
 
 public class DataUtilTest {
     
@@ -25,6 +25,28 @@ public class DataUtilTest {
     public void testInputIsNull()  throws IOException {
          Document doc = DataUtil.parseInputStream(null, "UTF-8", "http://foo.com/", Parser.htmlParser());
          assertEquals(doc.location(),"http://foo.com/");
+    }
+
+    /*
+        Parsing a tiny input with the default parser should not throw and the returned document
+        should contain the input as a text node in the body, encoded with the default charset.
+     */
+    @Test
+    public void testParsePlainText() {
+        InputStream is = new ByteArrayInputStream("abc".getBytes());
+        try {
+            Document doc = DataUtil.parseInputStream(is,null,
+                    "base", new Parser(new HtmlTreeBuilder()));
+
+            assertEquals("abc",doc.body().text());
+            assertEquals(Charset.defaultCharset(), doc.charset());
+            assertNotNull(doc.head());
+            assertEquals(0, doc.head().childNodeSize());
+
+        }
+        catch (Exception e) {
+            fail();
+        }
     }
     
     @Test
