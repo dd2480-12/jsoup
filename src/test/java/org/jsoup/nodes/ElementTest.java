@@ -603,6 +603,23 @@ public class ElementTest {
         assertTrue(noscript.data().isEmpty());
         assertEquals(1,noscript.childNodeSize());
     }
+    
+    /*
+     * Test that text after a <plaintext> tag is within a node when modified
+     */
+    @Test
+    public void testPlaintextData() {
+    	Document document = Jsoup.parse("<html><plaintext>lorem ipsum<p>hej</p></html>");
+    	Elements elem = document.getElementsByTag("plaintext");
+    	assertEquals(1, elem.size());
+    	
+    	Element plaintextTag = elem.first();
+    	plaintextTag.append(" dolor");
+    	assertEquals("lorem ipsum<p>hej</p></html> dolor", plaintextTag.text());
+    	
+    	plaintextTag.html("sit amet");
+    	assertEquals("sit amet", plaintextTag.text());
+    }
 
     @Test public void testWrap() {
         Document doc = Jsoup.parse("<div><p>Hello</p><p>There</p></div>");
