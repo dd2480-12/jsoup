@@ -23,7 +23,7 @@ Tests run and pass without problems.
 ## Complexity
 
 The methods we selected are the following:
-| # | Package.Class::Method | LOC | CCN (Liz/Clov/Own) 
+| # | Package.Class::Method | LOC | CCN (Liz/Clov) 
 | --- | --- | --- | --- |  
 1 | Parser.CharactherReader::nextIndexOf | 17 | 10/10 
 2 | Helper.HttpConnection::Response::Execute | 81 | 33/32 
@@ -57,7 +57,7 @@ Method # | Result
 
 2. Are the functions just complex, or also long?
    
-   They are also long
+   Mostly they are also long, but a few of them have switch statements that contribute to most of the complexity. 
 
 3. What is the purpose of the functions? 
 
@@ -107,10 +107,10 @@ Only `if-else`, `while`, `switch-case`
 ### Evaluation 
 
 1. How detailed is your coverage measurement?
-It tells you which branches (ID) where taken, and how many % of branches taken. 
+It tells you which branches (ID) were taken, and how many % of branches taken. 
 
 2. What are the limitations of your own tool?
-We can't handle the ternary operator because we need to use side effects to modify the data structure. A better tool would work on the AST for example. Lack of automation is error prone. 
+We can't handle the ternary operator because we need to use side effects to modify the data structure (technically we can but it would require some ugly workarounds). A better tool would work on the AST for example. Lack of automation is error prone. 
 
 3. Are the results of your tool consistent with existing coverage tools?
 They're quite consistent but differ by a few %. The real tools usually finds more branches, proably because they add implicit `else` for example. 
