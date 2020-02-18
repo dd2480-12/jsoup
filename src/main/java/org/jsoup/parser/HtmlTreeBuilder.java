@@ -14,7 +14,9 @@ import org.jsoup.select.Elements;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.jsoup.internal.StringUtil.inSorted;
 
@@ -448,6 +450,22 @@ public class HtmlTreeBuilder extends TreeBuilder {
 
     void resetInsertionMode() {
         boolean last = false;
+        final Map<String, HtmlTreeBuilderState> elementToState = new HashMap<>();
+        elementToState.put("select", HtmlTreeBuilderState.InSelect);
+        elementToState.put("td", HtmlTreeBuilderState.InCell);
+        elementToState.put("th", HtmlTreeBuilderState.InCell);
+        elementToState.put("tr", HtmlTreeBuilderState.InRow);
+        elementToState.put("tbody", HtmlTreeBuilderState.InTableBody);
+        elementToState.put("thead", HtmlTreeBuilderState.InTableBody);
+        elementToState.put("tfoot", HtmlTreeBuilderState.InTableBody);
+        elementToState.put("caption", HtmlTreeBuilderState.InCaption);
+        elementToState.put("colgroup", HtmlTreeBuilderState.InColumnGroup);
+        elementToState.put("table", HtmlTreeBuilderState.InTable);
+        elementToState.put("head", HtmlTreeBuilderState.InBody);
+        elementToState.put("body", HtmlTreeBuilderState.InBody);
+        elementToState.put("frameset", HtmlTreeBuilderState.InFrameset);
+        elementToState.put("html", HtmlTreeBuilderState.BeforeHead);
+
         for (int pos = stack.size() -1; pos >= 0; pos--) {
             ResetInsertionModeCoverage.add(0);
             Element node = stack.get(pos);
@@ -459,60 +477,26 @@ public class HtmlTreeBuilder extends TreeBuilder {
                 ResetInsertionModeCoverage.add(2);
             }
             String name = node.normalName();
-            if ("select".equals(name)) {
+
+            HtmlTreeBuilderState state;
+            if ("th".equals(name) && !last) {
                 ResetInsertionModeCoverage.add(3);
-                transition(HtmlTreeBuilderState.InSelect);
-                break; // frag
-            } else if (("td".equals(name) || "th".equals(name) && !last)) {
-                ResetInsertionModeCoverage.add(4);
                 transition(HtmlTreeBuilderState.InCell);
                 break;
-            } else if ("tr".equals(name)) {
-                ResetInsertionModeCoverage.add(5);
-                transition(HtmlTreeBuilderState.InRow);
+            } else if (((state = elementToState.get(name)) != null)) {
+                ResetInsertionModeCoverage.add(4);
+                transition(state);
                 break;
-            } else if ("tbody".equals(name) || "thead".equals(name) || "tfoot".equals(name)) {
-                ResetInsertionModeCoverage.add(6);
-                transition(HtmlTreeBuilderState.InTableBody);
-                break;
-            } else if ("caption".equals(name)) {
-                ResetInsertionModeCoverage.add(7);
-                transition(HtmlTreeBuilderState.InCaption);
-                break;
-            } else if ("colgroup".equals(name)) {
-                ResetInsertionModeCoverage.add(8);
-                transition(HtmlTreeBuilderState.InColumnGroup);
-                break; // frag
-            } else if ("table".equals(name)) {
-                ResetInsertionModeCoverage.add(9);
-                transition(HtmlTreeBuilderState.InTable);
-                break;
-            } else if ("head".equals(name)) {
-                ResetInsertionModeCoverage.add(10);
-                transition(HtmlTreeBuilderState.InBody);
-                break; // frag
-            } else if ("body".equals(name)) {
-                ResetInsertionModeCoverage.add(11);
-                transition(HtmlTreeBuilderState.InBody);
-                break;
-            } else if ("frameset".equals(name)) {
-                ResetInsertionModeCoverage.add(12);
-                transition(HtmlTreeBuilderState.InFrameset);
-                break; // frag
-            } else if ("html".equals(name)) {
-                ResetInsertionModeCoverage.add(13);
-                transition(HtmlTreeBuilderState.BeforeHead);
-                break; // frag
             } else if (last) {
-                ResetInsertionModeCoverage.add(14);
+                ResetInsertionModeCoverage.add(5);
                 transition(HtmlTreeBuilderState.InBody);
                 break; // frag
-            } else {
-                ResetInsertionModeCoverage.add(15);
             }
         }
-        ResetInsertionModeCoverage.add(16);
+
+        ResetInsertionModeCoverage.add(6);
         ResetInsertionModeCoverage.write();
+
     }
 
     // todo: tidy up in specific scope methods
