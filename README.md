@@ -59,7 +59,12 @@ Method # | Result
    
    They are also long
 
-3. What is the purpose of the functions?
+3. What is the purpose of the functions? 
+
+__Grading criteria__: 
+* 1: __You identify ten functions/methods with high complexity, and document the purpose of them, and why the complexity should be high (or not).__
+* 4: __The purpose of each of the high-complexity methods is documented in detail w.r.t. the different out- comes resulting in branches in the code.__
+
 
    1. Find the next instance of a character sequence and returns the offset from current position to next instance and returns -1 if no more instances of the sequence is found.
    2. Validates, sets up, executes and returns a HTTP response.  
