@@ -155,6 +155,7 @@ Helper.DataUtil::parseInputStream | 1 | git diff 979d5dd fd40893  src/test/java/
 Select.QueryParser::findElements | 1 | git diff 979d5dd 3d35832 | [Commit](https://github.com/dd2480-12/jsoup/commit/3d3583222333a5c0878c66cc73c892cbc5c1262d)
 Parser.HtmlTreeBuilder::resetInsertionMode | 2 | git diff 979d5dd 38fadf1 src/test/java/org/jsoup/parser/HtmlTreeBuilderTest.java | [Commit1](https://github.com/dd2480-12/jsoup/commit/38fadf16ea6192056882f5cc33611b65c7e95dde#diff-6862faf9576b1a665a83c0952d0049a2) 
 || 2 |git diff 979d5dd 093d849 | [Commit2](https://github.com/dd2480-12/jsoup/commit/093d849233e9e572e2e447b7c8dcb073b2523e40)
+|| 2 | git diff 979d5dd 12715e6 src/test/java/org/jsoup/parser/HtmlTreeBuilderTest.java | [Commit3](https://github.com/dd2480-12/jsoup/commit/12715e612a26a634b47fe5b457f7a3e15aecd763)
 Parser.TokenQueue::chompBalanced | 1 | git diff 979d5dd fd40893 src/test/java/org/jsoup/parser/TokenQueueTest.java | [Commit](https://github.com/dd2480-12/jsoup/commit/fd40893eb887d6cfe1d61d03ad9077eadd91cf78)
 Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit](https://github.com/dd2480-12/jsoup/commit/bf9ee64f1421d0101c6bce035154082583208e4a)
 
