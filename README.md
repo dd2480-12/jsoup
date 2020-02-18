@@ -132,14 +132,11 @@ The methods we selected are the following:
 3 | Helper.DataUtil::parseInputStream | 92.2 | 1 | 95.9 
 4 | Select.QueryParser::findElements | 97.2 | 1 | 100
 5 | Parser.TokenQueue::chompBalanced | 98.5 | 1 | 100
-6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4 | 4 | 89.9
+6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4 | 6 | 98.9
 7 | Helper.DataUtil::detectCharsetFromBom | 95.2 | 1 | 100
 8 | Nodes.Entities::escape | 100 | 0 | 100
-9 | Parser.HtmlTreeBuilder::parseFragment | 63.6 | 1 | 72.7
-| | __Sum added tests__ | | TODO |
-
-
-(3 (refctr 125))
+9 | Parser.HtmlTreeBuilder::parseFragment | 63.6 | 3 | 96.2
+| | __Sum added tests__ | | 14 |
 
 Report of new coverage: 
    See ~/CloverReports/improvedCloverReport locally
