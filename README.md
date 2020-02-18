@@ -132,7 +132,7 @@ The methods we selected are the following:
 6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4 | 4 | 89.9
 7 | Helper.DataUtil::detectCharsetFromBom | 95.2 | 0 | 95.2
 8 | Nodes.Entities::escape | 100 | 0 | 100
-9 | Parser.HtmlTreeBuilder::parseFragment | ?? | ?? | TODO
+9 | Parser.HtmlTreeBuilder::parseFragment | 63.6 | 1 | 72.7
 | | __Sum added tests__ | | TODO |
 
 
