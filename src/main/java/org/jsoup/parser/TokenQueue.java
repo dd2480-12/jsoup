@@ -1,6 +1,11 @@
 package org.jsoup.parser;
 
 import org.jsoup.internal.StringUtil;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import org.jsoup.helper.Validate;
 
 /**
@@ -272,8 +277,13 @@ public class TokenQueue {
             }
         }
         public static void print_coverage() {
-            coverage();
-            System.out.println("The percentage of branch coverage is "+result);
+            try (PrintWriter pw = new PrintWriter(new File("chompBalanced.txt"))) {
+            	coverage();
+                pw.write("Branch coverage of chompBalanced: " + result + '\n');
+                pw.flush();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
     /**
