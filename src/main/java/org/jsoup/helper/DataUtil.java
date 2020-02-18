@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -299,25 +300,73 @@ public final class DataUtil {
         }
         return StringUtil.releaseBuilder(mime);
     }
+    
+    public static class DetectCharsetFromBom_test {
+    	static boolean entered_branch[] = new boolean[5];
+
+    	public static void print_to_file() {
+    		String s = print();
+    		double d = coverage();
+    		try {
+    			PrintWriter out = new PrintWriter("DetectCharsetFromBomTest.txt");
+    			out.println(s + "\n" + "Coverage\n" + d);
+    			out.flush();
+    			out.close();
+    		}
+    		catch(Exception e) {
+
+    		}
+    	}
+
+    	public static double coverage() {
+    		double cover = 0;
+    		for(int i = 0; i < entered_branch.length; i++) {
+    			if(entered_branch[i]) {
+    				cover++;
+    			}
+    		}
+    		return cover / entered_branch.length;
+    	}
+    	public static String print() {
+    		StringBuilder s = new StringBuilder();
+    		s.append("Entered Branches\n");
+    		for(int i = 0; i < entered_branch.length; i++) {
+    			if(entered_branch[i]) {
+    				s.append((i + 1) + " ");
+    			}
+    		}
+    		s.append("\n");
+    		return s.toString();
+    	}
+    }
 
     private static BomCharset detectCharsetFromBom(final ByteBuffer byteData) {
         final Buffer buffer = byteData; // .mark and rewind used to return Buffer, now ByteBuffer, so cast for backward compat
         buffer.mark();
         byte[] bom = new byte[4];
-        if (byteData.remaining() >= bom.length) {
+        if (byteData.remaining() >= bom.length) { //ID 1
+        	DetectCharsetFromBom_test.entered_branch[0] = true;
             byteData.get(bom);
             buffer.rewind();
         }
-        if (bom[0] == 0x00 && bom[1] == 0x00 && bom[2] == (byte) 0xFE && bom[3] == (byte) 0xFF || // BE
+        if (bom[0] == 0x00 && bom[1] == 0x00 && bom[2] == (byte) 0xFE && bom[3] == (byte) 0xFF || // BE //ID 2
             bom[0] == (byte) 0xFF && bom[1] == (byte) 0xFE && bom[2] == 0x00 && bom[3] == 0x00) { // LE
+        	DetectCharsetFromBom_test.entered_branch[1] = true;
+        	DetectCharsetFromBom_test.print_to_file();
             return new BomCharset("UTF-32", false); // and I hope it's on your system
-        } else if (bom[0] == (byte) 0xFE && bom[1] == (byte) 0xFF || // BE
+        } else if (bom[0] == (byte) 0xFE && bom[1] == (byte) 0xFF || // BE //ID 3
             bom[0] == (byte) 0xFF && bom[1] == (byte) 0xFE) {
+        	DetectCharsetFromBom_test.entered_branch[2] = true;
+        	DetectCharsetFromBom_test.print_to_file();
             return new BomCharset("UTF-16", false); // in all Javas
-        } else if (bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF) {
+        } else if (bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF) { //ID 4
+        	DetectCharsetFromBom_test.entered_branch[3] = true;
+        	DetectCharsetFromBom_test.print_to_file();
             return new BomCharset("UTF-8", true); // in all Javas
             // 16 and 32 decoders consume the BOM to determine be/le; utf-8 should be consumed here
-        }
+        } //ID 5
+        DetectCharsetFromBom_test.entered_branch[4] = true;
+        DetectCharsetFromBom_test.print_to_file();
         return null;
     }
 
