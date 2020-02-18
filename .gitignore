@@ -6,5 +6,7 @@ target/
 .classpath
 .project
 .settings/
+*/.DS_STORE
+.clover/
 *Thrash*
 
