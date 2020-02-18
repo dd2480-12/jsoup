@@ -247,7 +247,35 @@ public class TokenQueue {
         matchChomp(seq);
         return data;
     }
-
+    
+    
+   /*
+    * add manual coverage calculation to TokenQueue::chompBalanced
+    */
+    public static class chompBalanced_test{
+        static boolean [] branch_num = new boolean [10];
+        static double result ;
+        
+        public static void coverage() {
+            double cover =0;
+            for(int i=0;i<branch_num.length;i++) {
+                if (branch_num[i]) {
+                    cover +=1;
+                }
+            }
+            result = cover /branch_num.length;
+        }
+        
+        public static void print_branches() {
+            for(int i = 0; i < branch_num.length; i++) {
+                System.out.println("ID " + (i + 1) + " covered? " + branch_num[i]);
+            }
+        }
+        public static void print_coverage() {
+            coverage();
+            System.out.println("The percentage of branch coverage is "+result);
+        }
+    }
     /**
      * Pulls a balanced string off the queue. E.g. if queue is "(one (two) three) four", (,) will return "one (two) three",
      * and leave " four" on the queue. Unbalanced openers and closers can be quoted (with ' or ") or escaped (with \). Those escapes will be left
@@ -257,6 +285,8 @@ public class TokenQueue {
      * @param close closer
      * @return data matched from the queue
      */
+   
+    
     public String chompBalanced(char open, char close) {
         int start = -1;
         int end = -1;
@@ -266,35 +296,57 @@ public class TokenQueue {
         boolean inDoubleQuote = false;
 
         do {
-            if (isEmpty()) break;
+            if (isEmpty()) {
+                chompBalanced_test.branch_num[0]=true;
+                break;
+            }
+            
             char c = consume();
             if (last == 0 || last != ESC) {
-                if (c == '\'' && c != open && !inDoubleQuote)
+                if (c == '\'' && c != open && !inDoubleQuote) {
+                    chompBalanced_test.branch_num[1]= true;
                     inSingleQuote = !inSingleQuote;
-                else if (c == '"' && c != open && !inSingleQuote)
+                }
+                else if (c == '"' && c != open && !inSingleQuote) {
+                    chompBalanced_test.branch_num[2]= true;
                     inDoubleQuote = !inDoubleQuote;
-                if (inSingleQuote || inDoubleQuote)
+                }
+                if (inSingleQuote || inDoubleQuote) {
+                    chompBalanced_test.branch_num[3]= true;
                     continue;
-
+                }
                 if (c == open) {
                     depth++;
-                    if (start == -1)
+                    if (start == -1) {
+                        chompBalanced_test.branch_num[4]= true;
                         start = pos;
+                    }else {
+                        chompBalanced_test.branch_num[5]= true;
+                    }
                 }
-                else if (c == close)
+                else if (c == close) {
                     depth--;
+                    chompBalanced_test.branch_num[6]= true;
+                }
             }
 
-            if (depth > 0 && last != 0)
+            if (depth > 0 && last != 0) {
+                chompBalanced_test.branch_num[7]= true;
                 end = pos; // don't include the outer match pair in the return
+            }
             last = c;
         } while (depth > 0);
         final String out = (end >= 0) ? queue.substring(start, end) : "";
         if (depth > 0) {// ran out of queue before seeing enough )
+            chompBalanced_test.branch_num[8]= true;
             Validate.fail("Did not find balanced marker at '" + out + "'");
+        }else {
+            chompBalanced_test.branch_num[9]= true;
         }
+        chompBalanced_test.print_coverage();
         return out;
     }
+    
     
     /**
      * Unescape a \ escaped string.
