@@ -702,9 +702,9 @@ public class HttpConnection implements Connection {
             return execute(req, null);
         }
 
-        static class ExecuteCoverage {
+        public static class ExecuteCoverage {
             private final static int COUNT = 31;
-            private static boolean[] branches = new boolean[COUNT];
+            public static boolean[] branches = new boolean[COUNT];
 
             public static void add(int idx) {
                 branches[idx] = true;

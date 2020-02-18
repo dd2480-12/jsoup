@@ -258,7 +258,7 @@ public class TokenQueue {
     * add manual coverage calculation to TokenQueue::chompBalanced
     */
     public static class chompBalanced_test{
-        static boolean [] branch_num = new boolean [10];
+        public static boolean [] branch_num = new boolean [10];
         static double result ;
         
         public static void coverage() {

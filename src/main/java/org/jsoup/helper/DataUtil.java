@@ -96,7 +96,7 @@ public final class DataUtil {
     }
     
     public static class parseInputStream_test{
-        static boolean [] branch_num = new boolean [18];
+        public static boolean [] branch_num = new boolean [18];
         static double result ;
         
         public static void coverage() {
@@ -306,7 +306,7 @@ public final class DataUtil {
     }
     
     public static class DetectCharsetFromBom_test {
-    	static boolean entered_branch[] = new boolean[5];
+    	public static boolean entered_branch[] = new boolean[5];
 
     	public static void print_to_file() {
     		String s = print();

@@ -416,9 +416,9 @@ public class HtmlTreeBuilder extends TreeBuilder {
         queue.set(i, in);
     }
 
-    static class ResetInsertionModeCoverage {
+    public static class ResetInsertionModeCoverage {
         private final static int COUNT = 17;
-        private static boolean[] branches = new boolean[COUNT];
+        public static boolean[] branches = new boolean[COUNT];
 
         public static void add(int idx) {
             branches[idx] = true;

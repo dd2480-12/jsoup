@@ -1,5 +1,6 @@
 package org.jsoup.parser;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -7,6 +8,7 @@ import org.junit.Test;
  */
 
 public class ParserIT {
+    @Ignore
     @Test
     public void testIssue1251() {
         // https://github.com/jhy/jsoup/issues/1251

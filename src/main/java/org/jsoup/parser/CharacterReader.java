@@ -31,7 +31,7 @@ public final class CharacterReader {
 
     
     public static class NextIndexOf_test {
-    	static boolean entered_branch[] = new boolean[7];
+    	public static boolean entered_branch[] = new boolean[7];
     	
     	public static void print_to_file() {
     		String s = print();
