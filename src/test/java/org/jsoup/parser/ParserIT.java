@@ -7,7 +7,7 @@ import org.junit.Test;
  */
 
 public class ParserIT {
-    @Test
+    //@Test
     public void testIssue1251() {
         // https://github.com/jhy/jsoup/issues/1251
         StringBuilder str = new StringBuilder("<a href=\"\"ca");

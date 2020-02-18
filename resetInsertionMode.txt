@@ -1,0 +1,1 @@
+Branch coverage of resetInsertionMode: 1.0
