@@ -272,10 +272,10 @@ public class QueryParser {
 		else // unhandled
         {
             covered(28);
-            report();
+            //report();
             throw new Selector.SelectorParseException("Could not parse query '%s': unexpected token at '%s'", query, tq.remainder());
         }
-        report();
+        //report();
     }
 
     public static void report() {

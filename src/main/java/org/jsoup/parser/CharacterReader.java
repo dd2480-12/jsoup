@@ -233,13 +233,13 @@ public final class CharacterReader {
                 for (int j = 1; i < last && seq.charAt(j) == charBuf[i]; i++, j++) {NextIndexOf_test.entered_branch[4] = true; /* empty */ } // # 5
                 if (i == last) { // found full sequence // #6
                 	NextIndexOf_test.entered_branch[5] = true;
-            		NextIndexOf_test.print_to_file();
+            		//NextIndexOf_test.print_to_file();
                     return offset - bufPos;
                 }
             }
         } // #7
         NextIndexOf_test.entered_branch[6] = true;
-        NextIndexOf_test.print_to_file();
+       // NextIndexOf_test.print_to_file();
         return -1;
     }
 

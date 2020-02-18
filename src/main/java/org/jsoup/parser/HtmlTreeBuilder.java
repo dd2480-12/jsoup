@@ -544,7 +544,7 @@ public class HtmlTreeBuilder extends TreeBuilder {
             }
         }
         ResetInsertionModeCoverage.add(16);
-        ResetInsertionModeCoverage.write();
+        //ResetInsertionModeCoverage.write();
     }
 
     // todo: tidy up in specific scope methods

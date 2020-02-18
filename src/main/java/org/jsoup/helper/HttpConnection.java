@@ -737,7 +737,7 @@ public class HttpConnection implements Connection {
             String protocol = req.url().getProtocol();
             if (!protocol.equals("http") && !protocol.equals("https")) {
                 ExecuteCoverage.add(0);
-                ExecuteCoverage.write();
+                //ExecuteCoverage.write();
                 throw new MalformedURLException("Only http & https protocols supported");
             } else {
                 ExecuteCoverage.add(1);
@@ -808,14 +808,14 @@ public class HttpConnection implements Connection {
                         req.cookie(cookie.getKey(), cookie.getValue());
                     }
                     ExecuteCoverage.add(15);
-                    ExecuteCoverage.write();
+                   // ExecuteCoverage.write();
                     return execute(req, res);
                 } else {
                     ExecuteCoverage.add(16);
                 }
                 if ((status < 200 || status >= 400) && !req.ignoreHttpErrors()) {
                     ExecuteCoverage.add(17);
-                    ExecuteCoverage.write();
+                   // ExecuteCoverage.write();
                     throw new HttpStatusException("HTTP error fetching URL", status, req.url().toString());
                 } else {
                     ExecuteCoverage.add(18);
@@ -829,7 +829,7 @@ public class HttpConnection implements Connection {
                         && !xmlContentTypeRxp.matcher(contentType).matches()
                 ) {
                     ExecuteCoverage.add(19);
-                    ExecuteCoverage.write();
+                   // ExecuteCoverage.write();
                     throw new UnsupportedMimeTypeException("Unhandled content type. Must be text/*, application/xml, or application/*+xml",
                             contentType, req.url().toString());
                 } else {
@@ -876,12 +876,12 @@ public class HttpConnection implements Connection {
                 } else {
                     ExecuteCoverage.add(30);
                 }
-                ExecuteCoverage.write();
+                //ExecuteCoverage.write();
                 throw e;
             }
 
             res.executed = true;
-            ExecuteCoverage.write();
+           // ExecuteCoverage.write();
             return res;
         }
 

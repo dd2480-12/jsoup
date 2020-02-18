@@ -260,7 +260,7 @@ public class TokenQueue {
     public static class chompBalanced_test{
         public static boolean [] branch_num = new boolean [10];
         static double result ;
-        
+
         public static void coverage() {
             double cover =0;
             for(int i=0;i<branch_num.length;i++) {
@@ -351,7 +351,7 @@ public class TokenQueue {
         }else {
             chompBalanced_test.branch_num[9]= true;
         }
-        chompBalanced_test.print_coverage();
+       // chompBalanced_test.print_coverage();
         return out;
     }
     
