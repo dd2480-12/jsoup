@@ -133,7 +133,7 @@ The methods we selected are the following:
 4 | Select.QueryParser::findElements | 97.2 | 1 | 100
 5 | Parser.TokenQueue::chompBalanced | 98.5 | 1 | 100
 6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4 | 4 | 89.9
-7 | Helper.DataUtil::detectCharsetFromBom | 95.2 | 0 | 95.2
+7 | Helper.DataUtil::detectCharsetFromBom | 95.2 | 1 | 100
 8 | Nodes.Entities::escape | 100 | 0 | 100
 9 | Parser.HtmlTreeBuilder::parseFragment | 63.6 | 1 | 72.7
 | | __Sum added tests__ | | TODO |
@@ -156,6 +156,7 @@ Select.QueryParser::findElements | 1 | git diff 979d5dd 3d35832 | [Commit](https
 Parser.HtmlTreeBuilder::resetInsertionMode | 2 | git diff 979d5dd 38fadf1 src/test/java/org/jsoup/parser/HtmlTreeBuilderTest.java | [Commit1](https://github.com/dd2480-12/jsoup/commit/38fadf16ea6192056882f5cc33611b65c7e95dde#diff-6862faf9576b1a665a83c0952d0049a2) 
 || 2 |git diff 979d5dd 093d849 | [Commit2](https://github.com/dd2480-12/jsoup/commit/093d849233e9e572e2e447b7c8dcb073b2523e40)
 || 2 | git diff 979d5dd 12715e6 src/test/java/org/jsoup/parser/HtmlTreeBuilderTest.java | [Commit3](https://github.com/dd2480-12/jsoup/commit/12715e612a26a634b47fe5b457f7a3e15aecd763)
+Helper.DataUtil::detectCharsetFromBom | 1 | git diff 979d5dd 5663647 | [Commit](https://github.com/dd2480-12/jsoup/commit/56636476af066a3bec2b6bdda1b059f866f18fd6)
 Parser.TokenQueue::chompBalanced | 1 | git diff 979d5dd fd40893 src/test/java/org/jsoup/parser/TokenQueueTest.java | [Commit](https://github.com/dd2480-12/jsoup/commit/fd40893eb887d6cfe1d61d03ad9077eadd91cf78)
 Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit](https://github.com/dd2480-12/jsoup/commit/bf9ee64f1421d0101c6bce035154082583208e4a)
 
