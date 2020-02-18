@@ -125,17 +125,17 @@ Report of old coverage:
    See ~/CloverReports/initialCloverageReport locally
 
 The methods we selected are the following:
-| # | Package.Class::Method | Init Coverage (%) | Added tests | Impr Coverage 
+| # | Package.Class::Method | Init Coverage % (Clov/Own) | Added tests | Impr Coverage 
 | --- | --- | --- | --- | --- | 
-1 | Parser.CharactherReader::nextIndexOf | 100 | 0 | 100
-2 | Helper.HttpConnection::Response::Execute | 92.7 | 1 | 94.8 
-3 | Helper.DataUtil::parseInputStream | 92.2 | 1 | 95.9 
-4 | Select.QueryParser::findElements | 97.2 | 1 | 100
-5 | Parser.TokenQueue::chompBalanced | 98.5 | 1 | 100
-6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4 | 6 | 98.9
-7 | Helper.DataUtil::detectCharsetFromBom | 95.2 | 1 | 100
-8 | Nodes.Entities::escape | 100 | 0 | 100
-9 | Parser.HtmlTreeBuilder::parseFragment | 63.6 | 3 | 96.2
+1 | Parser.CharactherReader::nextIndexOf | 100/100 | 0 | 100
+2 | Helper.HttpConnection::Response::Execute | 92.7/90.3 | 1 | 94.8 
+3 | Helper.DataUtil::parseInputStream | 92.2/83.3 | 1 | 95.9 
+4 | Select.QueryParser::findElements | 97.2/96.6 | 1 | 100
+5 | Parser.TokenQueue::chompBalanced | 98.5/100 | 1 | 100
+6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4/58.8 | 6 | 98.9
+7 | Helper.DataUtil::detectCharsetFromBom | 95.2/100 | 1 | 100
+8 | Nodes.Entities::escape | 100/100 | 0 | 100
+9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 3 | 96.2
 | | __Sum added tests__ | | 14 |
 
 Report of new coverage: 
