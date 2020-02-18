@@ -135,8 +135,8 @@ The methods we selected are the following:
 6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4/58.8 | 6 | 98.9
 7 | Helper.DataUtil::detectCharsetFromBom | 95.2/100 | 1 | 100
 8 | Nodes.Entities::escape | 100/100 | 0 | 100
-9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 3 | 96.2
-| | __Sum added tests__ | | 14 |
+9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 4 | ??
+| | __Sum added tests__ | | 15 |
 
 Report of new coverage: 
    See ~/CloverReports/improvedCloverReport locally
@@ -157,7 +157,7 @@ Helper.DataUtil::detectCharsetFromBom | 1 | git diff 979d5dd 5663647 | [Commit](
 Parser.TokenQueue::chompBalanced | 1 | git diff 979d5dd fd40893 src/test/java/org/jsoup/parser/TokenQueueTest.java | [Commit](https://github.com/dd2480-12/jsoup/commit/fd40893eb887d6cfe1d61d03ad9077eadd91cf78)
 Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit](https://github.com/dd2480-12/jsoup/commit/bf9ee64f1421d0101c6bce035154082583208e4a)
 || 2 | git diff 979d5dd 539b7ea | [Commit2](https://github.com/dd2480-12/jsoup/commit/539b7ea95a22c9f320cda8dd8486dc8c9b14a4ad)
-
+|| 1 | git diff 979d5dd 7f11aa0 | [Commit3](https://github.com/dd2480-12/jsoup/commit/7f11aa0da279626a4d7fa302477450e90573c475)
 
 ## Refactoring
 
