@@ -721,6 +721,9 @@ public class HttpConnection implements Connection {
             public static void write() {
                 try (PrintWriter pw = new PrintWriter(new File("execute.txt"))) {
                     pw.write("Branch coverage of execute: " + coverage() + '\n');
+                    for (int i = 0; i < branches.length; i++) {
+                        pw.write("branch " + i + " accessed: " + branches[i] + '\n');
+                    }
                     pw.flush();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
