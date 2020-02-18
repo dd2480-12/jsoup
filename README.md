@@ -159,7 +159,7 @@ Parser.HtmlTreeBuilder::resetInsertionMode | 2 | git diff 979d5dd 38fadf1 src/te
 Helper.DataUtil::detectCharsetFromBom | 1 | git diff 979d5dd 5663647 | [Commit](https://github.com/dd2480-12/jsoup/commit/56636476af066a3bec2b6bdda1b059f866f18fd6)
 Parser.TokenQueue::chompBalanced | 1 | git diff 979d5dd fd40893 src/test/java/org/jsoup/parser/TokenQueueTest.java | [Commit](https://github.com/dd2480-12/jsoup/commit/fd40893eb887d6cfe1d61d03ad9077eadd91cf78)
 Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit](https://github.com/dd2480-12/jsoup/commit/bf9ee64f1421d0101c6bce035154082583208e4a)
-
+|| 2 | git diff 979d5dd 539b7ea | [Commit2](https://github.com/dd2480-12/jsoup/commit/539b7ea95a22c9f320cda8dd8486dc8c9b14a4ad)
 
 
 ## Refactoring
@@ -170,10 +170,10 @@ Estimated impact of refactoring (lower CC, but other drawbacks?).
 
 ### Carried out refactoring 
 
-| Pkg.Class::method | Old CCN | New CCN | 1-New/Old
+| Pkg.Class::method | Old CCN | New CCN | New/Old
 |---|---|---|---|
-Parser.HtmlTreeBuilder::resetInsertionMode | 19 | 7 | 0.6317
-Helper.DataUtil::detectCharsetFromBom | 17 | 5 | 0.705
+Parser.HtmlTreeBuilder::resetInsertionMode | 19 | 7 | 0.368
+Helper.DataUtil::detectCharsetFromBom | 17 | 5 | 0.294
 
 [resetInsertionMode](https://github.com/dd2480-12/jsoup/commit/bba8604a4f68fcda6349f7a42681bb69e44c225d): 
 
