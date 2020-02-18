@@ -183,8 +183,10 @@ Helper.DataUtil::detectCharsetFromBom | 17 | 5 | 0.705
 
 
 
-## Overall experience TODO 
+## Overall experience  
+
+Learned to use and interpret Cloverage and IDEA built in coverage tool. Learned how to use them to improve unit tests. One big take-away is that lower complexity generally means it's easier to achieve better coverage, but it might make the code harder to understand or more messy. 
 
 What are your main take-aways from this project? What did you learn?
 
-Is there something special you want to mention here?
+
