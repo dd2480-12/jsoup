@@ -67,11 +67,11 @@ __Grading criteria__:
 
 
    1. Find the next instance of a character sequence and returns the offset from current position to next instance and returns -1 if no more instances of the sequence is found.
-   2. Validates, sets up, executes and returns a HTTP response.  
+   2. Validates, sets up, executes and returns a HTTP response. While running, it checks for possible bugs, errors, and controls what kind of response it will return. This adds up to a high complexity, but many of the if statements can be refactored out and become more easily tested.
    3. Decode the input string as UTF-8. Determine if the input contains <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">. If the input does not contain any of them, check if it contains xml encoding. If it doesn’t, the function re-decodes the input.
    4. Parses a CSS selector into an EvaluatorTree, throws error if no expected “token” is encountered 
    5. Format the string to get a balanced substring. I.e if the queue is((one) two), the function will return “one” and leave “ two” on the queue.  
-   6. Sets the current state of the HTML tree builder, i.e. if inside body, table, before html, etc.
+   6. Sets the current state of the HTML tree builder, i.e. if inside body, table, before html, etc. It has high complexity because it needs to set a different state for different HTML tags, resulting in many if statements.
    7. Detect if UTF-32, UTF-16 or UTF-8 is being used by inspecting the byte order mark (BOM)
    8. Potentially normalises whitespace. Then encodes the string as html, ex. “<” will be returned as “&lt”. For each character it checks if it is one of four special HTML characters, and if so, replaces them. 
 
