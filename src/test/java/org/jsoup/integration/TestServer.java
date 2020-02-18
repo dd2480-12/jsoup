@@ -56,4 +56,17 @@ public class TestServer {
             return "http://localhost:" + port + path;
         }
     }
+    
+    // for test case handlesLocationBug
+    public static String mapWithError(Class<? extends BaseServlet> servletClass) {
+        synchronized (jetty) {
+            if (!jetty.isStarted())
+                start(); // if running out of the test cases
+
+            String path = "/" + servletClass.getSimpleName();
+            handler.addServletWithMapping(servletClass, path + "/*");
+            int port = ((ServerConnector) jetty.getConnectors()[0]).getLocalPort();
+            return "http:/http://localhost:" + port + path;
+        }
+    }
 }
