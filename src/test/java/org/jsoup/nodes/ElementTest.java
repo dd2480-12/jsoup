@@ -8,6 +8,7 @@ import org.jsoup.select.NodeFilter;
 import org.jsoup.select.NodeVisitor;
 import org.junit.Test;
 
+import javax.print.Doc;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -561,6 +562,46 @@ public class ElementTest {
         Element style = elements.first();
         style.html("background: black;");
         assertEquals("background: black;", style.html());
+    }
+
+    /*
+        Test that original code inside a script tag is contained within data but appended
+        text is contained within text.
+     */
+    @Test public void testScriptData() {
+        Document doc = Jsoup.parse("<html><script>var a = 0;</script></html>");
+
+        Elements elements = doc.getElementsByTag("script");
+        assertEquals(1, elements.size());
+
+        Element script = elements.first();
+        script.append("This is a script");
+
+        assertEquals("var a = 0;", script.data());
+
+    }
+
+    /*
+        Test that text in a noscript tag is contained as text nodes when modified.
+     */
+    @Test public void testNoScriptData() {
+        Document doc = Jsoup.parse("<html><script>var a = 0;</script><noscript>no</noscript></html>");
+
+        Elements elements = doc.getElementsByTag("noscript");
+        assertEquals(1, elements.size());
+
+        Element noscript = elements.first();
+
+        noscript.append(" JS");
+        assertEquals("no JS", noscript.text());
+        assertEquals(2, noscript.childNodeSize());
+        assertTrue(noscript.data().isEmpty());
+
+        noscript.html("enable it");
+        assertEquals("enable it", noscript.text());
+
+        assertTrue(noscript.data().isEmpty());
+        assertEquals(1,noscript.childNodeSize());
     }
 
     @Test public void testWrap() {
