@@ -104,13 +104,16 @@ What kinds of constructs does your tool support, and how accurate is its output?
 
 Only `if-else`, `while`, `switch-case`
 
-### Evaluation TODO
+### Evaluation 
 
 1. How detailed is your coverage measurement?
+It tells you which branches (ID) where taken, and how many % of branches taken. 
 
 2. What are the limitations of your own tool?
+We can't handle the ternary operator because we need to use side effects to modify the data structure. A better tool would work on the AST for example. Lack of automation is error prone. 
 
 3. Are the results of your tool consistent with existing coverage tools?
+They're quite consistent but differ by a few %. The real tools usually finds more branches, proably because they add implicit `else` for example. 
 
 ### Coverage improvement
 
