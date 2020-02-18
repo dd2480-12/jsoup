@@ -109,16 +109,13 @@ public final class DataUtil {
             result = cover /branch_num.length;
         }
         
-        public static void print_branches() {
-            for(int i = 0; i < branch_num.length; i++) {
-                System.out.println("ID " + (i + 1) + " covered? " + branch_num[i]);
-            }
-        }
-        
         public static void print_coverage() {
             try (PrintWriter pw = new PrintWriter(new File("parseInputStream.txt"))) {
             	coverage();
                 pw.write("Branch coverage of parseInputStream: " + result + '\n');
+                for(int i = 0; i < branch_num.length; i++) {
+                    pw.write("ID " + i + " covered? " + branch_num[i] + '\n');
+                }
                 pw.flush();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
