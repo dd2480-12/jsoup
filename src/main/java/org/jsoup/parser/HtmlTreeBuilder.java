@@ -12,8 +12,7 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
-import java.io.Reader;
-import java.io.StringReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -417,53 +416,103 @@ public class HtmlTreeBuilder extends TreeBuilder {
         queue.set(i, in);
     }
 
+    static class ResetInsertionModeCoverage {
+        private final static int COUNT = 17;
+        private static boolean[] branches = new boolean[COUNT];
+
+        public static void add(int idx) {
+            branches[idx] = true;
+        }
+
+        public static double coverage() {
+            int accesses = 0;
+            for (boolean accessed : branches) {
+                accesses += accessed ? 1 : 0;
+            }
+            return (double) accesses / COUNT;
+        }
+
+        public static void write() {
+            try (PrintWriter pw = new PrintWriter(new File("resetInsertionMode.txt"))) {
+                pw.write("Branch coverage of resetInsertionMode: " + coverage() + '\n');
+                pw.flush();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    void setContextElement(Element el) {
+        contextElement = el;
+    }
+
     void resetInsertionMode() {
         boolean last = false;
         for (int pos = stack.size() -1; pos >= 0; pos--) {
+            ResetInsertionModeCoverage.add(0);
             Element node = stack.get(pos);
             if (pos == 0) {
+                ResetInsertionModeCoverage.add(1);
                 last = true;
                 node = contextElement;
+            } else {
+                ResetInsertionModeCoverage.add(2);
             }
             String name = node.normalName();
             if ("select".equals(name)) {
+                ResetInsertionModeCoverage.add(3);
                 transition(HtmlTreeBuilderState.InSelect);
                 break; // frag
             } else if (("td".equals(name) || "th".equals(name) && !last)) {
+                ResetInsertionModeCoverage.add(4);
                 transition(HtmlTreeBuilderState.InCell);
                 break;
             } else if ("tr".equals(name)) {
+                ResetInsertionModeCoverage.add(5);
                 transition(HtmlTreeBuilderState.InRow);
                 break;
             } else if ("tbody".equals(name) || "thead".equals(name) || "tfoot".equals(name)) {
+                ResetInsertionModeCoverage.add(6);
                 transition(HtmlTreeBuilderState.InTableBody);
                 break;
             } else if ("caption".equals(name)) {
+                ResetInsertionModeCoverage.add(7);
                 transition(HtmlTreeBuilderState.InCaption);
                 break;
             } else if ("colgroup".equals(name)) {
+                ResetInsertionModeCoverage.add(8);
                 transition(HtmlTreeBuilderState.InColumnGroup);
                 break; // frag
             } else if ("table".equals(name)) {
+                ResetInsertionModeCoverage.add(9);
                 transition(HtmlTreeBuilderState.InTable);
                 break;
             } else if ("head".equals(name)) {
+                ResetInsertionModeCoverage.add(10);
                 transition(HtmlTreeBuilderState.InBody);
                 break; // frag
             } else if ("body".equals(name)) {
+                ResetInsertionModeCoverage.add(11);
                 transition(HtmlTreeBuilderState.InBody);
                 break;
             } else if ("frameset".equals(name)) {
+                ResetInsertionModeCoverage.add(12);
                 transition(HtmlTreeBuilderState.InFrameset);
                 break; // frag
             } else if ("html".equals(name)) {
+                ResetInsertionModeCoverage.add(13);
                 transition(HtmlTreeBuilderState.BeforeHead);
                 break; // frag
             } else if (last) {
+                ResetInsertionModeCoverage.add(14);
                 transition(HtmlTreeBuilderState.InBody);
                 break; // frag
+            } else {
+                ResetInsertionModeCoverage.add(15);
             }
         }
+        ResetInsertionModeCoverage.add(16);
+        ResetInsertionModeCoverage.write();
     }
 
     // todo: tidy up in specific scope methods

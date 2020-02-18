@@ -64,7 +64,8 @@ public class QueryParserTest {
         assertEquals("div :parentspan", parse.toString()); // TODO - don't really love that toString() result...
     }
 
-    @Test(expected = Selector.SelectorParseException.class) public void invalidToken() {
+    @Test(expected = Selector.SelectorParseException.class)
+    public void exceptOnInvalidToken() {
         QueryParser.parse(":qwe");
     }
 }
