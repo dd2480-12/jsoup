@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -113,9 +114,15 @@ public final class DataUtil {
                 System.out.println("ID " + (i + 1) + " covered? " + branch_num[i]);
             }
         }
+        
         public static void print_coverage() {
-            coverage();
-            System.out.println("The percentage of branch coverage is "+result);
+            try (PrintWriter pw = new PrintWriter(new File("parseInputStream.txt"))) {
+            	coverage();
+                pw.write("Branch coverage of parseInputStream: " + result + '\n');
+                pw.flush();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
