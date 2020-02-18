@@ -65,6 +65,7 @@ public class CRReportTest {
         mcvr.add(new MethodResult(HtmlTreeBuilder.ResetInsertionModeCoverage.branches, "HtmlTreeBuilder::resetInsertionMode"));
         mcvr.add(new MethodResult(DataUtil.DetectCharsetFromBom_test.entered_branch, "DataUtil::detectCharSetFromBom"));
         mcvr.add(new MethodResult(Entities.coverage, "Entities::escape"));
+        mcvr.add(new MethodResult(HtmlTreeBuilder.parseFragmentCoverage, "HtmlTreeBuilder::parseFragment"));
 
         for(MethodResult mr : mcvr) {
             sb.append(generateMethodReport(mr.coverage, mr.name));
