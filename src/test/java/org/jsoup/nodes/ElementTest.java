@@ -551,6 +551,17 @@ public class ElementTest {
         head.html("<title><i>bad</i></title>");
         assertEquals("<title>&lt;i&gt;bad&lt;/i&gt;</title>", head.html());
     }
+    
+    @Test public void testSetStyle() {
+        Document doc = Jsoup.parse("<html><style></style></html>");
+
+        Elements elements = doc.getElementsByTag("style");
+        assertEquals(elements.size(), 1);
+        
+        Element style = elements.first();
+        style.html("background: black;");
+        assertEquals("background: black;", style.html());
+    }
 
     @Test public void testWrap() {
         Document doc = Jsoup.parse("<div><p>Hello</p><p>There</p></div>");
