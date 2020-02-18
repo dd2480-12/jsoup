@@ -77,6 +77,11 @@ public class HtmlTreeBuilder extends TreeBuilder {
         fosterInserts = false;
         fragmentParsing = false;
     }
+    public static boolean[] parseFragmentCoverage = new boolean[12];
+
+    private void pfC(int i) {
+        parseFragmentCoverage[i] = true;
+    }
 
     List<Node> parseFragment(String inputFragment, Element context, String baseUri, Parser parser) {
         // context may be null
@@ -86,24 +91,48 @@ public class HtmlTreeBuilder extends TreeBuilder {
         fragmentParsing = true;
         Element root = null;
 
-        if (context != null) {
-            if (context.ownerDocument() != null) // quirks setup:
+        if (context != null) {  // 0
+            pfC(0);
+            if (context.ownerDocument() != null) // 1 quirks setup:
+            {
+                pfC(1);
                 doc.quirksMode(context.ownerDocument().quirksMode());
+            } else { // 2
+                pfC(2);
+            }
 
             // initialise the tokeniser state:
             String contextTag = context.tagName();
-            if (StringUtil.in(contextTag, "title", "textarea"))
+            if (StringUtil.in(contextTag, "title", "textarea")) // 3
+            {
+                pfC(3);
                 tokeniser.transition(TokeniserState.Rcdata);
-            else if (StringUtil.in(contextTag, "iframe", "noembed", "noframes", "style", "xmp"))
+            }
+            else if (StringUtil.in(contextTag, "iframe", "noembed", "noframes", "style", "xmp")) // 4
+            {
+                pfC(4);
                 tokeniser.transition(TokeniserState.Rawtext);
-            else if (contextTag.equals("script"))
+            }
+            else if (contextTag.equals("script")) // 5
+            {
+                pfC(5);
                 tokeniser.transition(TokeniserState.ScriptData);
-            else if (contextTag.equals(("noscript")))
+            }
+            else if (contextTag.equals(("noscript"))) // 6
+            {
+                pfC(6);
                 tokeniser.transition(TokeniserState.Data); // if scripting enabled, rawtext
-            else if (contextTag.equals("plaintext"))
+            }
+            else if (contextTag.equals("plaintext")) // 7
+            {
+                pfC(7);
                 tokeniser.transition(TokeniserState.Data);
-            else
+            }
+            else // 8
+            {
+                pfC(8);
                 tokeniser.transition(TokeniserState.Data); // default
+            }
 
             root = new Element(Tag.valueOf("html", settings), baseUri);
             doc.appendChild(root);
@@ -114,10 +143,14 @@ public class HtmlTreeBuilder extends TreeBuilder {
             // with form correctly
             Elements contextChain = context.parents();
             contextChain.add(0, context);
-            for (Element parent: contextChain) {
-                if (parent instanceof FormElement) {
+            for (Element parent: contextChain) { // 9
+                pfC(9);
+                if (parent instanceof FormElement) { // 10
+                    pfC(10);
                     formElement = (FormElement) parent;
                     break;
+                } else { // 11
+                    pfC(11);
                 }
             }
         }
