@@ -41,7 +41,7 @@ https://en.wikipedia.org/wiki/Cyclomatic_complexity
 Method # | Result
 ---|---
 4        |  29-2+2=29
-5        |  42-21+2 = 23
+5        |  39-27+2 = 14
 6        |  36-19+2 = 19
 7        |  16-4+2 = 14 
 
