@@ -180,6 +180,7 @@ public class Entities {
 
         int codePoint;
         for (int offset = 0; offset < length; offset += Character.charCount(codePoint)) { //24
+            covered(24);
             codePoint = string.codePointAt(offset);
 
             if (normaliseWhite) { // 0
@@ -291,6 +292,7 @@ public class Entities {
             }
         }
         // 25
+        covered(25);
         //report();
     }
 
