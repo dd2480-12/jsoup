@@ -553,6 +553,9 @@ public class ElementTest {
         assertEquals("<title>&lt;i&gt;bad&lt;/i&gt;</title>", head.html());
     }
     
+    /**
+     * Test that a style tag is parsed and set correctly. 
+     */
     @Test public void testSetStyle() {
         Document doc = Jsoup.parse("<html><style></style></html>");
 
