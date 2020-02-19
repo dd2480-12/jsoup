@@ -41,7 +41,9 @@ public class HtmlTreeBuilderTest {
     	htb.resetInsertionMode();
     	assertEquals(htb.state(), HtmlTreeBuilderState.InColumnGroup);
     }
-    
+    /**
+     * If "table" is a node in Stack, htb.state() should be "InTable".
+     */
     @Test
     public void stateSetToInTable() {
     	HtmlTreeBuilder htb = new HtmlTreeBuilder();
@@ -69,6 +71,9 @@ public class HtmlTreeBuilderTest {
     	assertEquals(htb.state(), HtmlTreeBuilderState.InFrameset);
     }
     
+    /**
+     * If "html" is a node in Stack, htb.state() should be "BeforeHead"
+     */
     @Test
     public void stateSetToInBeforeHead() {
     	HtmlTreeBuilder htb = new HtmlTreeBuilder();

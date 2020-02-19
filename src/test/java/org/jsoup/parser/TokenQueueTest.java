@@ -10,6 +10,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class TokenQueueTest {
     // This is a test case that improves coverage.
+	/**
+	 *  If ")" is the only char in the queue, end will be negative. Therefore, 
+	 *  chompBalanced should return "".
+	 */
     @Test public void chompBalanced_improved() {
          TokenQueue tq = new TokenQueue(")");
          String guts = tq.chompBalanced('(', ')');
