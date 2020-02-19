@@ -163,6 +163,14 @@ Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit]
 
 Plan for refactoring complex code:
 
+1. Refactoring can be applied to chompBalanced function in TokenQueue.java
+The main purpose of chompBalanced function is to pull a string off the queue 
+from another substring. There is a while loop in the funciton. It can be splited from 
+the function and turn it to be a function which be processed only if the current string is not 
+empty. This function will be looped for several times until it find the substring with 
+the highest depth of given parameter in the original string. The impact of refactoring is that the complexity of the class
+ will be lower.
+
 Estimated impact of refactoring (lower CC, but other drawbacks?).
 
 ### Carried out refactoring 
