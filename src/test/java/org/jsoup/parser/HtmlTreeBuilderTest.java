@@ -29,6 +29,9 @@ public class HtmlTreeBuilderTest {
         }
     }
 
+    /*
+     * If "colgroup" is a node in Stack, htb.state() should be "InTable".
+     */
     @Test
     public void stateSetToInColumnGroup() {
     	HtmlTreeBuilder htb = new HtmlTreeBuilder();
