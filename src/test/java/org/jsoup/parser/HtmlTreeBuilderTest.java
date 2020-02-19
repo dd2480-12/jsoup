@@ -87,6 +87,9 @@ public class HtmlTreeBuilderTest {
     	assertEquals(htb.state(), HtmlTreeBuilderState.BeforeHead);
     }
     
+    /**
+     * Checks that the test correctly transitions to the last element in the stack. 
+     */
     @Test
     public void treeCorrectlyTransitionsToLastElement() {
         HtmlTreeBuilder tree = new HtmlTreeBuilder();
@@ -100,6 +103,9 @@ public class HtmlTreeBuilderTest {
         assertEquals(tree.state(), HtmlTreeBuilderState.InSelect);
     }
 
+    /**
+     * Check that the HTML tree correctly transitions to the context element when it is last element in the stack.
+     */
     @Test
     public void treeCorrectlyTransitionsToElements() {
         HtmlTreeBuilder tree = new HtmlTreeBuilder();

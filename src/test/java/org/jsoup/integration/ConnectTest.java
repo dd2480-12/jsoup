@@ -387,7 +387,11 @@ public class ConnectTest {
         assertTrue(threw);
     }
     
-
+    /**
+     * Checks that the parser correctly identifies the bug with http:/ as indicated by the source code in Response.execute,
+     * and fixes the protocol. 
+     * @throws IOException
+     */
     @Test public void handlesLocationBug() throws IOException {
         final Document doc = Jsoup.connect(RedirectServlet.Url)
                 .data("Hello", "there")
