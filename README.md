@@ -153,7 +153,7 @@ Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit]
 
 Plan for refactoring complex code:
 
-1. __resetInsertionMode__: The high complexity is neccessary in a way that the code needs to check for particular tags. However, there are different ways of doing it than having a list of if-statements. You can map each element to its corresponding state. When the method is called, get the state by calling it in the map using the element node name. If it doesn't exist, then continue. The only exception is the `th` tag, where we need to check if it's the last element. This reduces the amount of if-statements by a large amount, but introduces the need of having to instantiate a map every time the function is called. This may be an expensive procedure, depending on the amount of times the function is called. An alternative is having the map be global, and thus only created once. However, this introduces global data, which could increase the risk of bugs if not tested properly. 
+1. __resetInsertionMode__: The high complexity is neccessary in a way that the code needs to check for particular tags. However, there are different ways of doing it than having a list of if-statements. You can map each element to its corresponding state. When the method is called, get the state by calling it in the map using the element node name. If it doesn't exist, then continue. The only exception is the `th` tag, where we need to check if it's the last element. This reduces the amount of if-statements by a large amount, but introduces the need of having to instantiate a map every time the function is called. This may be an expensive procedure, depending on the amount of times the function is called. An alternative is having the map be global, and thus only created once. However, this introduces global data, which could increase the risk of bugs if not tested properly. An effect of this refactor is that it arguably gets harder to follow unless you study the structure map. 
 
 2. __chompBalanced__:  Refactoring can be applied to chompBalanced function in TokenQueue.java
 The main purpose of chompBalanced function is to pull a string off the queue 
@@ -161,13 +161,13 @@ from another substring. There is a while loop in the funciton. It can be splited
 the function and turn it to be a function which be processed only if the current string is not 
 empty. This function will be looped for several times until it find the substring with 
 the highest depth of given parameter in the original string. The impact of refactoring is that the complexity of the class
- will be lower.
+ will be lower and probably becomes easier to follow for a human. 
 
 3. __detectCharsetFromBom__: One easy way of reducing the complexity of detectCharsetFromBom would be to move the conditions of the if-statements to separate functions returning a boolean value. This split of the function would lower the complexity (of the function) and result in more easily readable code. The reason why this function is a good candidate to split is because of the “nested” conditions in the if-statements (several conditions linked by &&- and ||-operators). The drawback of this solution is that the overall complexity of the class doesn’t decrease.
 
-4. __Nodes.Entities::escape:__ Escape is very long and complex, even hard to follow for a human reader. It contains several state variables which change during execution. The most straight forward thing to do to reduce complexity is to put the switch statement into a separate private method, returning a string which is then appended to the variable `accum`. This can be done because all switch branches except one append to accum and nothing else. That case calls appendEncoded, but it could instead call an encode method and then return the result of that which would produce the same result. This would remove 6\*3 branches into a pure method instead of changing state in several places.  Reducing complexity by around 50%.
+4. __Nodes.Entities::escape:__ Escape is very long and complex, even hard to follow for a human reader. It contains several state variables which change during execution. The most straight forward thing to do to reduce complexity is to put the switch statement into a separate private method, returning a string which is then appended to the variable `accum`. This can be done because all switch branches except one append to accum and nothing else. That case calls appendEncoded, but it could instead call an encode method and then return the result of that which would produce the same result. This would remove 6\*3 branches into a pure method instead of changing state in several places, reducing complexity by around 50%. It also makes it easier to argue for correctness. 
 
-Estimated impact of refactoring (lower CC, but other drawbacks?).
+
 
 ### Carried out refactoring 
 
