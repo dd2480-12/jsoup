@@ -35,9 +35,6 @@ The methods we selected are the following:
 8 | Nodes.Entities::escape | 68 | 16/20  
 
 ### Manual CCN calc: 
-Write the number from above and the calculation (full equation): M = E-N+2P or π - s + 2
-https://en.wikipedia.org/wiki/Cyclomatic_complexity
-
 Method # | Result
 ---|---
 4        |  29-2+2=29
@@ -61,16 +58,11 @@ Method # | Result
 
 3. What is the purpose of the functions? 
 
-__Grading criteria__: 
-* 1: __You identify ten functions/methods with high complexity, and document the purpose of them, and why the complexity should be high (or not).__
-* 4: __The purpose of each of the high-complexity methods is documented in detail w.r.t. the different out- comes resulting in branches in the code.__
-
-
    1. The CharactherReader class consumes tokens of a string. The class contains a char buffer holding the characters of the string. The function nextIndexOf calculates the number of characters in the buffer between the buffers current position and the position of an input sequence of chars. The function has two return statements, one for when the offset is found and one for the case when the sequence does not occur from the buffers current position till the end. What makes the function complex is the many if-statements, two for-loops and one while-loop (many of which are nested). To add further to the complexity many of the conditions contain the &&-operator. However the level of complexity is needed to achieve what the requirements for the function. The first for-loop assure that the function continues to run to the end of the buffer, even if we at some point stumbles across the first character of the input sequence in the buffer. The first if-statement checks if the first character in the sequence does not equal the character at the current place in the buffer, if the character is not equal a while loop is started which iterates till the first character of the sequence is found in the buffer. The second if statement checks if there is enough buffer space left to fit the sequence within the buffer. The second for-loop is used to check if the characters in the buffer and sequence match from the second character to the last. The final if-statement checks if the for-loop iterated to the index of the supposedly last buffer index that contained the character sequence, if true the sequence have been found and the function returns the offset from current buffer position to the position of the sequence occurrence in the buffer. If all of this fails and the first for-loop has reached the end of the buffer the function returns -1.
    2. Validates, sets up, executes and returns a HTTP response. While running, it checks for possible bugs, errors, and controls what kind of response it will return. This adds up to a high complexity, but many of the if statements can be refactored out and become more easily tested.
    3. Decode the input string as UTF-8. Determine if the input contains <meta http-equiv="Content-Type" content="text/html;charset=gb2312"> or HTML5 <meta charset="gb2312">. If the input does not contain any of them, check if it contains xml encoding. If it doesn’t, the function re-decodes the input.
    4. findElements parses a query to find the different tokens used. It checks for each defined token and consume them while creating an evaluator tree through specialized private method calls. The complexity is needed because of the parsing. If an invalid token is encountered, an exception is thrown. 
-   5. Format the string to get a balanced substring. I.e if the queue is((one) two), the function will return “one” and leave “ two” on the queue. There are several factors casuing the high complexity of this function. There is a while lopp in the function which is used to iterate every character in a string. While a character is passed, several conditions will be checked. That's why the function is complex. The complexity can be reduced if it is divided into different function so that every function only check one rule for current character.
+   5. Format the string to get a balanced substring. I.e if the queue is((one) two), the function will return “one” and leave “ two” on the queue.  
    6. Sets the current state of the HTML tree builder, i.e. if inside body, table, before html, etc. It has high complexity because it needs to set a different state for different HTML tags, resulting in many if statements.
    7. The DataUtil class contain static utilities for handling data. The function detectCharsetFromBom takes buffer data as an argument and checks if the place in the buffer that should contain the byte order mark (BOM, a special unicode character that appears in the start of a text stream) matches with the BOM for UTF-32, UTF-16 and UTF-8. This is done by inspecting the first characters of the buffer data and try to match these characters to the ones presented for the different UTF encodings. The function returns an instance of the class BomCharset which contain information about the encoding type. There are 4 return statements one for UTF-32, UTF-16, UTF-8 and a general return null if an encoding could not be decided. To check for matches between the buffer characters and the different BOM encodings is what makes the function complex.To add to the complexity of the function the BOM for UTF-32 and UTF-16 are dependent on endianness, so for each encoding two checks have to be performed, one for big-endian and one for little-endian. One way of avoiding this complexity would be to use libraries such as “juniversalchardet” which have built in support for detecting the charset from the BOM. The first if statement checks if the remaining length of the buffer is big enough to contain the four characters needed for the UTF-32 BOM. The second if-statement check if the supposedly BOM is of UTF-32 standard for both big-endian and little-endian. The first else if statement does the same but for the UTF-16 encoding BOM standard (both big-endian and little-endian) and the final else if checks for the UTF-8 encoding BOM standard. If none of these BOM checks evaluate to true a final return statement returns null. If any of the three BOM statements evaluate to true, they return a BomCharset object containing the respective UTF encoding information.
    8. Potentially normalises whitespace. Then encodes the string as html, ex. “<” will be returned as “&lt”. For each character it checks if it is one of four special HTML characters, and if so, replaces them. The high complexity is because the method is doing many things and could be refactored. There are comments stating that it isn't split due to efficiency reasons though. Some branches add/remove whitespace, some matches and replaces html character and finally there are branches for fallbacking when codepoint is unexpectedly large. 
@@ -81,17 +73,15 @@ __Grading criteria__:
 
 5. Is the documentation clear w.r.t. all the possible outcomes?
 
-   Generally no, the documentation is not that detailed and often even missing. 
+   Generally no, the documentation is not that detailed and often even missing. The public methods are generally well documented but the (package) private ones are not. 
 
 ## Coverage
 
 ### Tools
-TODO
 
-Document your experience in using a "new"/different coverage tool.
+We used OpenClover integrated into IntelliJ and Eclipse, and IntelliJ's own coverage tool. In general OpenClover was straightforward to use but some had some issues integrating it in the start. Once solved it worked very well. Documentation was very basic for trying to understand why integration didn't work. Using the IntelliJ plugin worked well. 
 
-How well was the tool documented? Was it possible/easy/difficult to
-integrate it with your build environment?
+IntelliJ's own coverage does not provide method-by-method coverage data. 
 
 ### DYI
 
@@ -100,25 +90,24 @@ gather coverage measurements.
 
 https://github.com/dd2480-12/jsoup/tree/coverage/src/main
 
-What kinds of constructs does your tool support, and how accurate is its output?
+_What kinds of constructs does your tool support, and how accurate is its output?_ 
 
-Only `if-else`, `while`, `switch-case`
+Only `if-else`, `while`, `switch-case`, `for`
+
+It's very coarse grained and so less accurate than for example OpenClover. It doesn't provide any info about how many times branches are entered. We only measure number of branches entered divided by the total number, while OpenClover take lines of code executed into account. I.e. small ifs has less weight than big ones. 
 
 ### Evaluation 
 
-1. How detailed is your coverage measurement?
-It tells you which branches (ID) were taken, and how many % of branches taken. 
+1. _How detailed is your coverage measurement?_
+It tells you which branches (ID) were taken, and how many % of branches taken. See above.
 
-2. What are the limitations of your own tool?
+2. _What are the limitations of your own tool?_
 We can't handle the ternary operator because we need to use side effects to modify the data structure (technically we can but it would require some ugly workarounds). A better tool would work on the AST for example. Lack of automation is error prone. 
 
-3. Are the results of your tool consistent with existing coverage tools?
+3. _Are the results of your tool consistent with existing coverage tools?_
 They're quite consistent but differ by a few %. The real tools usually finds more branches, proably because they add implicit `else` for example. 
 
 ### Coverage improvement
-
-TODO 
-Show the comments that describe the requirements for the coverage.
 
 Report of old coverage: 
 
@@ -135,7 +124,7 @@ The methods we selected are the following:
 6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4/58.8 | 6 | 98.9/88.2
 7 | Helper.DataUtil::detectCharsetFromBom | 95.2/100 | 1 | 100/100
 8 | Nodes.Entities::escape | 100/100 | 0 | 100/100
-9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 4 | ??/75
+9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 4 | 85.9/75
 | | __Sum added tests__ | | 16 |
 
 Report of new coverage: 
@@ -200,7 +189,3 @@ Helper.DataUtil::detectCharsetFromBom | 17 | 5 | 0.294
 ## Overall experience  
 
 Learned to use and interpret Cloverage and IDEA built in coverage tool. Learned how to use them to improve unit tests. One big take-away is that lower complexity generally means it's easier to achieve better coverage, but it might make the code harder to understand or more messy. 
-
-What are your main take-aways from this project? What did you learn?
-
-
