@@ -139,7 +139,7 @@ public final class DataUtil {
                     decl = (XmlDeclaration) first;
                 else if (first instanceof Comment) {
                     Comment comment = (Comment) first;
-                    if (comment.isXmlDeclaration())
+                    if (comment.isXmlDeclaration()) //if comment is a xml declaration declare it as such
                         decl = comment.asXmlDeclaration();
                 }
                 if (decl != null) {
