@@ -73,7 +73,7 @@ __Grading criteria__:
    5. Format the string to get a balanced substring. I.e if the queue is((one) two), the function will return “one” and leave “ two” on the queue.  
    6. Sets the current state of the HTML tree builder, i.e. if inside body, table, before html, etc. It has high complexity because it needs to set a different state for different HTML tags, resulting in many if statements.
    7. The DataUtil class contain static utilities for handling data. The function detectCharsetFromBom takes buffer data as an argument and checks if the place in the buffer that should contain the byte order mark (BOM, a special unicode character that appears in the start of a text stream) matches with the BOM for UTF-32, UTF-16 and UTF-8. This is done by inspecting the first characters of the buffer data and try to match these characters to the ones presented for the different UTF encodings. The function returns an instance of the class BomCharset which contain information about the encoding type. There are 4 return statements one for UTF-32, UTF-16, UTF-8 and a general return null if an encoding could not be decided. To check for matches between the buffer characters and the different BOM encodings is what makes the function complex.To add to the complexity of the function the BOM for UTF-32 and UTF-16 are dependent on endianness, so for each encoding two checks have to be performed, one for big-endian and one for little-endian. One way of avoiding this complexity would be to use libraries such as “juniversalchardet” which have built in support for detecting the charset from the BOM. The first if statement checks if the remaining length of the buffer is big enough to contain the four characters needed for the UTF-32 BOM. The second if-statement check if the supposedly BOM is of UTF-32 standard for both big-endian and little-endian. The first else if statement does the same but for the UTF-16 encoding BOM standard (both big-endian and little-endian) and the final else if checks for the UTF-8 encoding BOM standard. If none of these BOM checks evaluate to true a final return statement returns null. If any of the three BOM statements evaluate to true, they return a BomCharset object containing the respective UTF encoding information.
-   8. Potentially normalises whitespace. Then encodes the string as html, ex. “<” will be returned as “&lt”. For each character it checks if it is one of four special HTML characters, and if so, replaces them. 
+   8. Potentially normalises whitespace. Then encodes the string as html, ex. “<” will be returned as “&lt”. For each character it checks if it is one of four special HTML characters, and if so, replaces them. The high complexity is because the method is doing many things and could be refactored. There are comments stating that it isn't split due to efficiency reasons though. Some branches add/remove whitespace, some matches and replaces html character and finally there are branches for fallbacking when codepoint is unexpectedly large. 
 
 4. Are exceptions taken into account in the given measurements?
 
@@ -127,15 +127,15 @@ Report of old coverage:
 The methods we selected are the following:
 | # | Package.Class::Method | Init Coverage % (Clov/Own) | Added tests | Impr Coverage 
 | --- | --- | --- | --- | --- | 
-1 | Parser.CharactherReader::nextIndexOf | 100/100 | 0 | 100
-2 | Helper.HttpConnection::Response::Execute | 92.7/90.3 | 1 | 94.8 
-3 | Helper.DataUtil::parseInputStream | 92.2/83.3 | 2 | 96.9 
-4 | Select.QueryParser::findElements | 97.2/96.6 | 1 | 100
-5 | Parser.TokenQueue::chompBalanced | 98.5/100 | 1 | 100
-6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4/58.8 | 6 | 98.9
-7 | Helper.DataUtil::detectCharsetFromBom | 95.2/100 | 1 | 100
-8 | Nodes.Entities::escape | 100/100 | 0 | 100
-9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 4 | ??
+1 | Parser.CharactherReader::nextIndexOf | 100/100 | 0 | 100/100
+2 | Helper.HttpConnection::Response::Execute | 92.7/90.3 | 1 | 94.8/93.5 
+3 | Helper.DataUtil::parseInputStream | 92.2/83.3 | 2 | 96.9/94.4 
+4 | Select.QueryParser::findElements | 97.2/96.6 | 1 | 100/100
+5 | Parser.TokenQueue::chompBalanced | 98.5/100 | 1 | 100/100
+6 | Parser.HtmlTreeBuilder::resetInsertionMode | 67.4/58.8 | 6 | 98.9/88.2
+7 | Helper.DataUtil::detectCharsetFromBom | 95.2/100 | 1 | 100/100
+8 | Nodes.Entities::escape | 100/100 | 0 | 100/100
+9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 4 | ??/75
 | | __Sum added tests__ | | 16 |
 
 Report of new coverage: 
