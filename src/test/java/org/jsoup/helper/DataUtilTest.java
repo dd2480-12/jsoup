@@ -20,7 +20,11 @@ import static org.junit.Assert.*;
 
 public class DataUtilTest {
     
-    // This is a test case that improves coverage.
+	/**
+	 * This is a test case that improves coverage.
+	 * If the InputStream is null, parseInputStream should return 
+	 * a new Document object with a location which equals to baseUri
+	**/
     @Test 
     public void testInputIsNull()  throws IOException {
          Document doc = DataUtil.parseInputStream(null, "UTF-8", "http://foo.com/", Parser.htmlParser());
