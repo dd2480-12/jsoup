@@ -29,7 +29,7 @@ public class Entities {
     private static final HashMap<String, String> multipoints = new HashMap<>(); // name -> multiple character references
     private static final Document.OutputSettings DefaultOutput = new Document.OutputSettings();
 
-    public static boolean[] coverage = new boolean[24];
+    public static boolean[] coverage = new boolean[26];
 
     public enum EscapeMode {
         /**
@@ -179,7 +179,7 @@ public class Entities {
         final int length = string.length();
 
         int codePoint;
-        for (int offset = 0; offset < length; offset += Character.charCount(codePoint)) {
+        for (int offset = 0; offset < length; offset += Character.charCount(codePoint)) { //24
             codePoint = string.codePointAt(offset);
 
             if (normaliseWhite) { // 0
@@ -290,6 +290,7 @@ public class Entities {
                 }
             }
         }
+        // 25
         //report();
     }
 
