@@ -55,7 +55,7 @@ public class HtmlTreeBuilderTest {
     	assertEquals(htb.state(), HtmlTreeBuilderState.InTable);
     }
     
-    // add one more test to improve the coverage
+    // If "frameset" is a node in Stack, htb.state() should be "InFrameset".
     @Test
     public void stateSetToInFrameset() {
     	HtmlTreeBuilder htb = new HtmlTreeBuilder();
