@@ -189,3 +189,5 @@ Helper.DataUtil::detectCharsetFromBom | 17 | 5 | 0.294
 ## Overall experience  
 
 Learned to use and interpret Cloverage and IDEA built in coverage tool. Learned how to use them to improve unit tests. One big take-away is that lower complexity generally means it's easier to achieve better coverage, but it might make the code harder to understand or more messy. 
+
+Trying to increase coverage can be a good way to initally get an understanding for how the different parts of the project work together. Understanding what public API calls cover what private methods etc. 
