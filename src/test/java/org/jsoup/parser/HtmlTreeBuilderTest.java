@@ -55,6 +55,39 @@ public class HtmlTreeBuilderTest {
     	assertEquals(htb.state(), HtmlTreeBuilderState.InTable);
     }
     
+    // add one more test to improve the coverage
+    @Test
+    public void stateSetToInFrameset() {
+    	HtmlTreeBuilder htb = new HtmlTreeBuilder();
+    	ArrayList<Element> stack = new ArrayList<>(2);
+    	Element node = new Element("p");
+    	Element node2 = new Element("frameset");
+    	stack.add(node);
+    	stack.add(node2);
+    	htb.stack = stack;
+    	htb.resetInsertionMode();
+    	assertEquals(htb.state(), HtmlTreeBuilderState.InFrameset);
+    }
+    
+    /**
+     * If "html" is a node in Stack, htb.state() should be "BeforeHead"
+     */
+    @Test
+    public void stateSetToInBeforeHead() {
+    	HtmlTreeBuilder htb = new HtmlTreeBuilder();
+    	ArrayList<Element> stack = new ArrayList<>(2);
+    	Element node = new Element("p");
+    	Element node2 = new Element("html");
+    	stack.add(node);
+    	stack.add(node2);
+    	htb.stack = stack;
+    	htb.resetInsertionMode();
+    	assertEquals(htb.state(), HtmlTreeBuilderState.BeforeHead);
+    }
+    
+    /**
+     * Checks that the test correctly transitions to the last element in the stack. 
+     */
     @Test
     public void treeCorrectlyTransitionsToLastElement() {
         HtmlTreeBuilder tree = new HtmlTreeBuilder();
