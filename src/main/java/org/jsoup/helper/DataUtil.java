@@ -182,7 +182,7 @@ public final class DataUtil {
                 }
                 else if (first instanceof Comment) {
                     Comment comment = (Comment) first;
-                    if (comment.isXmlDeclaration()) {
+                    if (comment.isXmlDeclaration()) { //if comment is a xml declaration declare it as such
                         decl = comment.asXmlDeclaration();
                         parseInputStream_test.branch_num[7] = true;    
                     }else {
