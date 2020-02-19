@@ -1,8 +1,47 @@
 # Report for assignment 3
 
-This is a template for your report. You are free to modify it as needed.
-It is not required to use markdown for your report either, but the report
-has to be delivered in a standard, cross-platform format.
+
+## Statement of contribution
+
+__Joar Ekelund__: 
+
+* Increase coverage of
+    * 3: parseInputStream
+    * 6: resetInsertionMode
+    * 9: parsefragment
+    
+    Implement coverage tool for detectCharsetFromBom and nextIndexOf, refactor detectCharsetFromBom
+
+
+__Alex Diaz__: 
+
+* Increase coverage of
+    * 2: Execute 
+    * 6: resetInsertionMode
+    * 9: parsefragment
+    
+    Implement coverage tool for resetInsertionMode and execute, refactor resetinsertionmode.
+
+__Dingli Mao__: 
+  
+* Increase coverage of
+    * 3: parseInputStream
+    * 6: resetInsertionMode
+    * 5: chompBalanced
+    
+    Implement coverage tool for chompBalanced and parseInputStream
+
+
+__Jesper Lundholm__: 
+
+* Increase coverage of
+    * 4: findElements
+    * 7: detectCharsetFromBom
+    * 9: parseFragment
+    
+    Implement coverage tool for parseFragment, escape and findElements.
+
+
 
 ## Project
 
