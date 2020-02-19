@@ -19,6 +19,14 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class DataUtilTest {
+    
+    // This is a test case that improves coverage.
+    @Test 
+    public void testInputIsNull()  throws IOException {
+         Document doc = DataUtil.parseInputStream(null, "UTF-8", "http://foo.com/", Parser.htmlParser());
+         assertEquals(doc.location(),"http://foo.com/");
+    }
+    
     @Test
     public void testCharset() {
         assertEquals("utf-8", DataUtil.getCharsetFromContentType("text/html;charset=utf-8 "));
