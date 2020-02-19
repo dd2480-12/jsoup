@@ -163,7 +163,9 @@ Parser.HtmlTreeBuilder::parseFragment | 1 | git diff 979d5dd bf9ee64 | [Commit]
 
 Plan for refactoring complex code:
 
-1. Refactoring can be applied to chompBalanced function in TokenQueue.java
+1. __resetInsertionMode__: The high complexity is neccessary in a way that the code needs to check for particular tags. However, there are different ways of doing it than having a list of if-statements. You can map each element to its corresponding state. When the method is called, get the state by calling it in the map using the element node name. If it doesn't exist, then continue. The only exception is the `th` tag, where we need to check if it's the last element. This reduces the amount of if-statements by a large amount, but introduces the need of having to instantiate a map every time the function is called. This may be an expensive procedure, depending on the amount of times the function is called. An alternative is having the map be global, and thus only created once. However, this introduces global data, which could increase the risk of bugs if not tested properly. 
+
+2. Refactoring can be applied to chompBalanced function in TokenQueue.java
 The main purpose of chompBalanced function is to pull a string off the queue 
 from another substring. There is a while loop in the funciton. It can be splited from 
 the function and turn it to be a function which be processed only if the current string is not 
