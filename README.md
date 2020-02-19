@@ -136,7 +136,7 @@ The methods we selected are the following:
 7 | Helper.DataUtil::detectCharsetFromBom | 95.2/100 | 1 | 100
 8 | Nodes.Entities::escape | 100/100 | 0 | 100
 9 | Parser.HtmlTreeBuilder::parseFragment | 63.6/66.7 | 4 | ??
-| | __Sum added tests__ | | 15 |
+| | __Sum added tests__ | | 16 |
 
 Report of new coverage: 
    See ~/CloverReports/improvedCloverReport locally
@@ -149,6 +149,7 @@ Report of new coverage:
 |---|---|---|---|
 Helper.HttpConnection::Response::Execute | 1 | git diff 979d5dd 38fadf1 src/test/java/org/jsoup/integration/ConnectTest.java | [Commit](https://github.com/dd2480-12/jsoup/commit/38fadf16ea6192056882f5cc33611b65c7e95dde)
 Helper.DataUtil::parseInputStream | 1 | git diff 979d5dd fd40893  src/test/java/org/jsoup/helper/DataUtilTest.java | [Commit](https://github.com/dd2480-12/jsoup/commit/fd40893eb887d6cfe1d61d03ad9077eadd91cf78)
+|| 1 | git diff 979d5dd e754aa0 | [Commit](https://github.com/dd2480-12/jsoup/commit/e754aa0444d7058a1b23282df67a1c7a13c7df62)
 Select.QueryParser::findElements | 1 | git diff 979d5dd 3d35832 | [Commit](https://github.com/dd2480-12/jsoup/commit/3d3583222333a5c0878c66cc73c892cbc5c1262d)
 Parser.HtmlTreeBuilder::resetInsertionMode | 2 | git diff 979d5dd 38fadf1 src/test/java/org/jsoup/parser/HtmlTreeBuilderTest.java | [Commit1](https://github.com/dd2480-12/jsoup/commit/38fadf16ea6192056882f5cc33611b65c7e95dde#diff-6862faf9576b1a665a83c0952d0049a2) 
 || 2 |git diff 979d5dd 093d849 | [Commit2](https://github.com/dd2480-12/jsoup/commit/093d849233e9e572e2e447b7c8dcb073b2523e40)
