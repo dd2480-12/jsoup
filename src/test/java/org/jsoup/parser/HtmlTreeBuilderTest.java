@@ -101,6 +101,9 @@ public class HtmlTreeBuilderTest {
         assertEquals(tree.state(), HtmlTreeBuilderState.InSelect);
     }
 
+    /**
+     * Check that the HTML tree correctly transitions to the context element when it is last element in the stack.
+     */
     @Test
     public void treeCorrectlyTransitionsToElements() {
         HtmlTreeBuilder tree = new HtmlTreeBuilder();
