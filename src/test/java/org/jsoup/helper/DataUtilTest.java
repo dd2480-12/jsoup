@@ -207,4 +207,19 @@ public class DataUtilTest {
         Document doc = Jsoup.parse(soup, null, "");
         assertEquals("Hellö Wörld!", doc.body().text());
     }
+    
+    /*
+     * Check that function can detect xml declaration within comment
+     */
+    @Test
+    public void testXmlCommentDecl() {
+        InputStream is = new ByteArrayInputStream("<!xml><elem>asd</elem></xml>".getBytes());
+        try {
+            Document doc = DataUtil.parseInputStream(is, null, "base", new Parser(new HtmlTreeBuilder()));
+			assertEquals("<elem>\n asd\n</elem>", doc.body().child(0).outerHtml());
+        }
+        catch (Exception e) {
+            fail();
+        }
+    }
 }
