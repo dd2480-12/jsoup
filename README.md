@@ -176,6 +176,8 @@ the highest depth of given parameter in the original string. The impact of refac
 
 3. __detectCharsetFromBom__: One easy way of reducing the complexity of detectCharsetFromBom would be to move the conditions of the if-statements to separate functions returning a boolean value. This split of the function would lower the complexity (of the function) and result in more easily readable code. The reason why this function is a good candidate to split is because of the “nested” conditions in the if-statements (several conditions linked by &&- and ||-operators). The drawback of this solution is that the overall complexity of the class doesn’t decrease.
 
+4. __Nodes.Entities::escape:__ Escape is very long and complex, even hard to follow for a human reader. It contains several state variables which change during execution. The most straight forward thing to do to reduce complexity is to put the switch statement into a separate private method, returning a string which is then appended to the variable `accum`. This can be done because all switch branches except one append to accum and nothing else. That case calls appendEncoded, but it could instead call an encode method and then return the result of that which would produce the same result. This would remove 6\*3 branches into a pure method instead of changing state in several places.  Reducing complexity by around 50%.
+
 Estimated impact of refactoring (lower CC, but other drawbacks?).
 
 ### Carried out refactoring 
